@@ -14,7 +14,7 @@
     height: 450px;
     width: 350px;
     max-width: 90%;
-    border-radius: 1rem;
+    border-radius: .6rem;
     background-color: rgb(229, 246, 250);
     border: 1px solid rgb(46, 103, 155);
 }
