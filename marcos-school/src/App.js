@@ -10,7 +10,7 @@ function App() {
           Área de Login
         </label>
 
-        <img src={Logo} />
+        <img src={Logo} alt="Logo"/>
 
         <input type="email" placeholder="Insira seu email" required />
 
