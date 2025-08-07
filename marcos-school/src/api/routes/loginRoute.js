@@ -6,10 +6,11 @@ router.get('/login/:email', async (req, res) => {
     try {
         const [rows] = await pool.query(
             `SELECT
-            id,
-            email,
-            password,
-            status
+                id,
+                email,
+                password,
+                status
+            FROM users
             WHERE email = ?`, [req.params.email]
         )
         res.json({
