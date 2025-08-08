@@ -22,3 +22,5 @@ router.get('/login/:email', async (req, res) => {
         res.status(500).json({ error: 'Erro no servidor.' })
     }
 })
+
+module.exports = router
