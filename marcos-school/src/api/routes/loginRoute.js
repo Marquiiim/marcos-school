@@ -13,10 +13,9 @@ router.get('/login/:email', async (req, res) => {
             FROM users
             WHERE email = ?`, [req.params.email]
         )
-        res.json({
-            success: true,
-            rows
-        })
+
+        rows.length === 0 ? res.json({ success: false, rows }) : res.json({ success: true, rows })
+
     } catch (err) {
         console.error('[ERROR] Não foi possível fazer a consulta:', err)
         res.status(500).json({ error: 'Erro no servidor.' })

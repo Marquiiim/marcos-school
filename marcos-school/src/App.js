@@ -7,11 +7,13 @@ import Logo from './img/LOGO.webp'
 function App() {
 
   const [email, setEmail] = useState()
+  const [credentialsError, setCredentialsError] = useState(false)
 
   const fetchUsers = async (email) => {
     try {
       const response = await axios.get(`http://localhost:5000/api/login/${email}`)
-      console.log(response.data)
+      response?.data?.success === false ? setCredentialsError(true) : setCredentialsError(false)
+      console.log(response)
     } catch (err) {
       console.error(`[Erro] ${err.response?.data || err.message}`)
     }
@@ -26,6 +28,12 @@ function App() {
         </label>
 
         <img src={Logo} alt="Logo" />
+
+        {credentialsError &&
+          <span className='credentials-invalid'>
+            Credenciais inválidas ou incorretas.
+          </span>
+        }
 
         <input type="email" placeholder="Insira seu email" required
           onChange={(e) => setEmail(e.target.value)}
@@ -47,7 +55,7 @@ function App() {
         </span>
 
       </form>
-    </div>
+    </div >
   );
 }
 
