@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import './App.css';
@@ -6,16 +7,23 @@ import Logo from './img/LOGO.webp'
 
 function App() {
 
+  const navigate = useNavigate()
   const [email, setEmail] = useState()
-  const [credentialsError, setCredentialsError] = useState(false)
+  const [password, setPassword] = useState()
+  const [error, setError] = useState(false)
 
-  const fetchUsers = async (email) => {
+  const fetchUsers = async () => {
+    setError(false)
+
     try {
-      const response = await axios.get(`http://localhost:5000/api/login/${email}`)
-      response?.data?.success === false ? setCredentialsError(true) : setCredentialsError(false)
-      console.log(response)
+      const response = await axios.post(`http://localhost:5000/api/login`, { email: email, password: password })
+
+      response.data?.success === true && response.status === 200 && navigate('/home')
+      
     } catch (err) {
-      console.error(`[Erro] ${err.response?.data || err.message}`)
+      console.error(`[Erro] ${err.message}`)
+      alert("[ERRO] Ocorreu um erro ao tentar logar, tente novamente ou contate um suporte.")
+      setError(true)
     }
   }
 
@@ -29,9 +37,9 @@ function App() {
 
         <img src={Logo} alt="Logo" />
 
-        {credentialsError &&
+        {error &&
           <span className='credentials-invalid'>
-            Credenciais inválidas ou incorretas.
+            Credenciais inválidas
           </span>
         }
 
@@ -39,7 +47,9 @@ function App() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input type="password" placeholder="Insira sua senha" required />
+        <input type="password" placeholder="Insira sua senha" required
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <button type="submit" className="login-button"
           onClick={(e) => {

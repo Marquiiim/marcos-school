@@ -2,7 +2,10 @@ const express = require('express')
 const router = express.Router()
 const pool = require('../bd/connectionBD')
 
-router.get('/login/:email', async (req, res) => {
+router.post('/login', async (req, res) => {
+
+    const { email, password } = req.body
+
     try {
         const [rows] = await pool.query(
             `SELECT
@@ -11,10 +14,29 @@ router.get('/login/:email', async (req, res) => {
                 password,
                 status
             FROM users
-            WHERE email = ?`, [req.params.email]
+            WHERE email = ?`, [email]
         )
 
-        rows.length === 0 ? res.json({ success: false, rows }) : res.json({ success: true, rows })
+        const user = rows[0]
+
+        if (user.length === 0) {
+            res.status(401).json({
+                success: false,
+                message: 'O usuário não existe.'
+            })
+        }
+
+        if (user.email !== email || user.password !== password) {
+            res.status(401).json({
+                success: false,
+                message: 'Credenciais inválidas.'
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                message: 'Sucesso ao logar.'
+            })
+        }
 
     } catch (err) {
         console.error('[ERROR] Não foi possível fazer a consulta:', err)
