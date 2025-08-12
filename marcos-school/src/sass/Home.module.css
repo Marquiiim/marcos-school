@@ -1,0 +1,89 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0a0f18;
+  padding: 2rem;
+}
+.container .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.info_system {
+  text-align: center;
+}
+.info_system h1 {
+  font-size: 3rem;
+  color: #3a9df8;
+  margin-bottom: 1rem;
+}
+.info_system h3 {
+  font-size: 1.5rem;
+  color: #2d7cc6;
+  margin-bottom: 1.5rem;
+}
+.info_system p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+.nav_system ul {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.nav_system ul li {
+  background: linear-gradient(145deg, #2d7cc6 0%, #3a9df8 100%);
+  border-radius: 12px;
+  padding: 1.2rem 2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  min-width: 180px;
+  text-align: center;
+}
+.nav_system ul li:hover {
+  transform: translateY(-5px);
+}
+.nav_system ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+}
+
+.last_login_text {
+  color: rgba(200, 212, 230, 0.85);
+  background-color: rgba(26, 58, 110, 0.15);
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.5rem;
+  border-left: 2px solid #3a9df8;
+  display: inline-block;
+  margin-top: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .info_system h1 {
+    font-size: 2.2rem;
+  }
+  .info_system h3 {
+    font-size: 1.2rem;
+  }
+  .nav_system ul {
+    flex-direction: column;
+  }
+  .nav_system ul li {
+    width: 100%;
+  }
+}/*# sourceMappingURL=Home.module.css.map */

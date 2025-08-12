@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4f2fe 100%);
+    background: #0a0f18;
     padding: 2rem;
 }
 
@@ -17,45 +17,48 @@
     width: 100%;
     max-width: 350px;
     border-radius: 1rem;
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border: none;
+    background-color: #121a26;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(58, 134, 255, 0.1); 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .info-area {
-    color: #2d7cc6;
+    color: #3a86ff;
     font-weight: 600;
     font-size: 1.1rem;
     text-align: center;
+    text-shadow: 0 0 8px rgba(58, 134, 255, 0.3);
 }
 
 img {
     height: auto;
     width: 8rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 input {
-    border: 2px solid #e1e8ed;
+    border: 2px solid #1e2b42;
     border-radius: 1rem;
     padding: 0.9rem 1rem;
     width: 100%;
     font-size: 0.95rem;
     transition: all 0.3s ease;
-    background-color: #f8fafc;
+    background-color: #0e1522;
+    color: rgba(200, 212, 230, 0.9);
 }
 
 input:focus {
     outline: none;
-    border-color: #2d7cc6;
-    box-shadow: 0 0 0 3px rgba(45, 124, 198, 0.2);
+    border-color: #3a86ff;
+    box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.3);
+    background-color: #121f33;
 }
 
 .login-button {
     border: none;
     border-radius: 1rem;
-    background: linear-gradient(to right, #2d7cc6, #3a9df8);
+    background: linear-gradient(to right, #2563eb, #3a86ff);
     color: white;
     padding: 1rem;
     width: 100%;
@@ -63,13 +66,13 @@ input:focus {
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(45, 124, 198, 0.2);
+    box-shadow: 0 4px 12px rgba(58, 134, 255, 0.3);
 }
 
 .login-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(45, 124, 198, 0.25);
-    opacity: 0.95;
+    box-shadow: 0 6px 16px rgba(58, 134, 255, 0.4);
+    background: linear-gradient(to right, #3a86ff, #4d9aff);
 }
 
 .login-button:active {
@@ -80,15 +83,15 @@ input:focus {
 .credentials-invalid {
     width: 100%;
     text-align: center;
-    color: #e74c3c;
+    color: #ff6b6b;
     font-size: 0.9rem;
     padding: 0.5rem;
-    background-color: rgba(231, 76, 60, 0.1);
+    background-color: rgba(255, 107, 107, 0.1);
     border-radius: 0.5rem;
     margin-top: -0.5rem;
+    border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
-/* Animação sutil para mensagens de erro */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }

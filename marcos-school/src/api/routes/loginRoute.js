@@ -10,23 +10,25 @@ router.post('/login', async (req, res) => {
         const [rows] = await pool.query(
             `SELECT
                 id,
+                status,
+                username,
                 email,
                 password,
-                status
+                last_login
             FROM users
             WHERE email = ?`, [email]
         )
 
         const user = rows[0]
 
-        if (user.length === 0) {
+        if (!rows || rows.length === 0) {
             res.status(401).json({
                 success: false,
                 message: 'O usuário não existe.'
             })
         }
 
-        if (user.email !== email || user.password !== password) {
+        if (user.password !== password) {
             res.status(401).json({
                 success: false,
                 message: 'Credenciais inválidas.'
@@ -34,13 +36,22 @@ router.post('/login', async (req, res) => {
         } else {
             res.status(200).json({
                 success: true,
-                message: 'Sucesso ao logar.'
+                message: 'Sucesso ao logar.',
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    status: user.status,
+                    ultimo_login: user.last_login
+                }
             })
         }
 
     } catch (err) {
-        console.error('[ERROR] Não foi possível fazer a consulta:', err)
-        res.status(500).json({ error: 'Erro no servidor.' })
+        console.error('[ERROR] Falha no login:', err)
+        return res.status(500).json({
+            success: false,
+            error: 'Falha interna no servidor.'
+        })
     }
 })
 
