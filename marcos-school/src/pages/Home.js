@@ -39,7 +39,7 @@ function Home() {
                     </ul>
                 </nav>
                 <span className={styles.last_login_text}>
-                    Seu último acesso: {userData.ultimo_login === '' ? 'Primeiro acesso em curso.' : userData.ultimo_login}
+                    Seu último acesso: {!userData.ultimo_login ? 'Primeiro acesso em curso.' : userData.ultimo_login}
                 </span>
             </div>
         </section>
