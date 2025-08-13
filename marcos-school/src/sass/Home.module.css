@@ -43,7 +43,11 @@
   justify-content: center;
   width: 100%;
 }
-.nav_system ul li {
+.nav_system ul a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
   background: linear-gradient(145deg, #2d7cc6 0%, #3a9df8 100%);
   border-radius: 12px;
   padding: 1.2rem 2rem;
@@ -52,14 +56,8 @@
   min-width: 180px;
   text-align: center;
 }
-.nav_system ul li:hover {
+.nav_system ul a:hover {
   transform: translateY(-5px);
-}
-.nav_system ul li a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 500;
-  display: block;
 }
 
 .last_login_text {

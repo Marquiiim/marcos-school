@@ -33,18 +33,26 @@ router.post('/login', async (req, res) => {
                 success: false,
                 message: 'Credenciais inválidas.'
             })
-        } else {
-            res.status(200).json({
-                success: true,
-                message: 'Sucesso ao logar.',
-                user: {
-                    id: user.id,
-                    username: user.username,
-                    status: user.status,
-                    ultimo_login: user.last_login
-                }
-            })
         }
+
+        const dataAtual = new Date()
+
+        await pool.query(
+            `UPDATE users
+            SET last_login = ?
+            WHERE id = ?`, [dataAtual, user.id]
+        )
+
+        res.status(200).json({
+            success: true,
+            message: 'Sucesso ao logar.',
+            user: {
+                id: user.id,
+                username: user.username,
+                status: user.status,
+                ultimo_login: dataAtual
+            }
+        })
 
     } catch (err) {
         console.error('[ERROR] Falha no login:', err)

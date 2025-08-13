@@ -52,7 +52,11 @@ $color-text-light: #ffffff;
   justify-content: center;
   width: 100%;
 
-  li {
+  a {
+    color: $color-text-light;
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
     background: linear-gradient(145deg, $color-primary 0%, $color-primary-light 100%);
     border-radius: 12px;
     padding: 1.2rem 2rem;
@@ -63,13 +67,6 @@ $color-text-light: #ffffff;
 
     &:hover {
       transform: translateY(-5px);
-    }
-
-    a {
-      color: $color-text-light;
-      text-decoration: none;
-      font-weight: 500;
-      display: block;
     }
   }
 }

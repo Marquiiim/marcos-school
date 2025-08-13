@@ -5,6 +5,13 @@ function Home() {
 
     const userData = JSON.parse(sessionStorage.getItem('currentUser'))
 
+    const formateBr = (data) => {
+        if (!data) return 'Primeiro acesso em curso.'
+
+        const dataObj = new Date(data)
+        return dataObj.toLocaleDateString('pt-BR')
+    }
+
     return (
         <section className={styles.container}>
             <div className={styles.content}>
@@ -32,14 +39,14 @@ function Home() {
                             </Link>
                         </li>
                         <li>
-                            <Link>
+                            <Link to="/create">
                                 Cadastro de Turmas
                             </Link>
                         </li>
                     </ul>
                 </nav>
                 <span className={styles.last_login_text}>
-                    Seu último acesso: {!userData.ultimo_login ? 'Primeiro acesso em curso.' : userData.ultimo_login}
+                    Seu último acesso: {formateBr(userData.ultimo_login)}
                 </span>
             </div>
         </section>
