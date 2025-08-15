@@ -1,8 +1,15 @@
+import styles from '../sass/CreateClasses.module.css'
+
 function CreateClasses() {
 
     return (
-        <div>
-            <form>
+        <div className={styles.container}>
+                <div className={styles.title_page}>
+                    <h2>
+                        Área de criação de classe
+                    </h2>
+                </div>
+            <form className={styles.content_form}>
 
                 <input type="number" placeholder="ID do professor" required />
                 <input type="text" placeholder="Nome da disciplina" required />
@@ -34,7 +41,7 @@ function CreateClasses() {
                     </option>
                 </select>
 
-                <div>
+                <div className={styles.button_student_add}>
                     <span>ÁREA PARA ADIÇÃO DE ALUNOS.</span>
                 </div>
                 <button type="submit">

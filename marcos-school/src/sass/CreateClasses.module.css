@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5rem;
+  background: #0a0f18;
+  height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+.container .content_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.title_page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  background: rgb(26, 35, 52);
+  color: #3a9df8;
+  height: 20%;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+input {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  background: rgb(34.5, 46.4423076923, 69);
+  border: 2px solid rgba(58, 157, 248, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+          appearance: textfield;
+}
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input:focus {
+  outline: none;
+  border-color: #3a9df8;
+  box-shadow: 0 0 0 3px rgba(58, 157, 248, 0.2);
+}
+input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+select {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  background: rgb(34.5, 46.4423076923, 69);
+  border: 2px solid rgba(58, 157, 248, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  transition: all 0.3s ease;
+}
+select:focus {
+  outline: none;
+  border-color: #3a9df8;
+  box-shadow: 0 0 0 3px rgba(58, 157, 248, 0.2);
+}
+select option {
+  background: rgb(26, 35, 52);
+  color: #ffffff;
+  padding: 1rem;
+}
+
+button,
+.button_student_add {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  background: #2d7cc6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+button:hover,
+.button_student_add:hover {
+  background: #3a9df8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+button:active,
+.button_student_add:active {
+  transform: translateY(0);
+}/*# sourceMappingURL=CreateClasses.module.css.map */
