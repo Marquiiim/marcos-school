@@ -16,7 +16,7 @@ function App() {
     setError(false)
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/login`, { email: email, password: password })
+      const response = await axios.post(`http://localhost:5000/api/auth`, { email: email, password: password })
 
       const user = {
         id: response.data.user.id,
@@ -30,7 +30,7 @@ function App() {
       response.data?.success === true && response.status === 200 && navigate('/home')
 
     } catch (err) {
-      console.error(`[Erro] ${err.message}`)
+      console.error(`[ERRO] ${err.message}`)
       alert("[ERRO] Ocorreu um erro ao tentar logar, tente novamente ou contate um suporte.")
       setError(true)
     }

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;
   background: #0a0f18;
   height: 100vh;
   padding: 2rem;
@@ -13,8 +13,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 2rem;
-  padding: 1rem;
+  gap: 1.5rem;
   width: 100%;
   max-width: 500px;
 }
@@ -29,7 +28,6 @@
   color: #3a9df8;
   height: 20%;
   width: 100%;
-  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;

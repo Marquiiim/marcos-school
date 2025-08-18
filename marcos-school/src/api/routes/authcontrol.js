@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const pool = require('../bd/connectionBD')
 
-router.post('/login', async (req, res) => {
+router.post('/auth', async (req, res) => {
 
     const { email, password } = req.body
 

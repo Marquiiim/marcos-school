@@ -8,7 +8,7 @@ $color-text-light: #ffffff;
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 5rem;
+    gap: 3rem;
     background: $color-bg-darkest;
     height: 100vh;
     padding: 2rem;
@@ -19,8 +19,7 @@ $color-text-light: #ffffff;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        gap: 2rem;
-        padding: 1rem;
+        gap: 1.5rem;
         width: 100%;
         max-width: 500px;
     }
@@ -36,7 +35,6 @@ $color-text-light: #ffffff;
     color: $color-primary-light;
     height: 20%;
     width: 100%;
-    padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
@@ -55,11 +53,13 @@ input {
     transition: all 0.3s ease;
 
     &[type="number"] {
+
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         -moz-appearance: textfield;
         appearance: textfield;
     }
