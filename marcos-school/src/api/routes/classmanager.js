@@ -4,20 +4,21 @@ const pool = require('../bd/connectionBD')
 
 router.post('/classmanager', async (req, res) => {
 
-    const { id_professor, nome_disciplina, modalidade, status_turma } = req.body
+    const { nome_disciplina, id_professor, modalidade, status_turma } = req.body
 
     try {
-        console.log("[BACKEND] Informações coletadas pronta para tratamento de dados", req.body)
-
-        res.status(201).json({
-            success: true,
-            message: '[BACKEND] Dados coletados.',
-            data: {
-                id_professor,
+        const [rows] = await pool.query(
+            `INSERT INTO classes (
                 nome_disciplina,
+                id_professor,
                 modalidade,
                 status_turma
-            }
+            ) VALUES (?, ?, ?, ?)`, [nome_disciplina, id_professor, modalidade, status_turma]
+        )
+
+        res.status(200).json({
+            success: true,
+            message: '[BACKEND] Dados coletados e inseridos no banco.'
         })
 
     } catch (err) {

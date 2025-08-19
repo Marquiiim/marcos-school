@@ -19,7 +19,7 @@ function App() {
       const response = await axios.post(`http://localhost:5000/api/auth`, { email: email, password: password })
 
       const user = {
-        id: response.data.user.id,
+        id_professor: response.data.user.id,
         status: response.data.user.status,
         ultimo_login: response.data.user.ultimo_login,
         name: response.data.user.username

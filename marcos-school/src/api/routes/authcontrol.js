@@ -24,14 +24,14 @@ router.post('/auth', async (req, res) => {
         if (!rows || rows.length === 0) {
             res.status(401).json({
                 success: false,
-                message: 'O usuário não existe.'
+                message: '[BACKEND] O usuário não existe.'
             })
         }
 
         if (user.password !== password) {
             res.status(401).json({
                 success: false,
-                message: 'Credenciais inválidas.'
+                message: '[BACKEND] Credenciais inválidas.'
             })
         }
 
@@ -45,7 +45,7 @@ router.post('/auth', async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Sucesso ao logar.',
+            message: '[BACKEND] Sucesso ao logar.',
             user: {
                 id: user.id,
                 username: user.username,

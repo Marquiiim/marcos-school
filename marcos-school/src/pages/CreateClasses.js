@@ -1,28 +1,44 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../sass/CreateClasses.module.css'
 
 function CreateClasses() {
 
+    const navigate = useNavigate()
     const formRef = useRef()
+    const userData = JSON.parse(sessionStorage.getItem('currentUser'))
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (isSubmitting) return
+        setIsSubmitting(true)
+
         const formData = new FormData(formRef.current)
         const data = Object.fromEntries(formData)
-        classCreation(data)
+
+        try {
+            await classCreation(data)
+            formRef.current.reset()
+            alert('[SISTEMA] Turma criada com sucesso.')
+            navigate('/home')
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
-    const classCreation = (dataForm) => {
+    const classCreation = async (dataForm) => {
         try {
-            const response = axios.post('http://localhost:5000/api/classmanager', {
-                id_professor: dataForm.id_professor,
+            const response = await axios.post('http://localhost:5000/api/classmanager', {
                 nome_disciplina: dataForm.nome_disciplina,
+                id_professor: userData.id_professor,
                 modalidade: dataForm.modalidade,
                 status_turma: dataForm.status_turma
             })
-            console.log(response.data)
+            return response.data
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
@@ -40,11 +56,6 @@ function CreateClasses() {
                 onSubmit={handleSubmit}
                 className={styles.content_form}>
 
-                <input type="number"
-                    name="id_professor"
-                    placeholder="ID do professor"
-                    required />
-
                 <input type="text"
                     name="nome_disciplina"
                     placeholder="Nome da disciplina"
@@ -60,7 +71,7 @@ function CreateClasses() {
                     <option value="Presencial">
                         Presencial
                     </option>
-                    <option value="Híbrido">
+                    <option value="Hibrido">
                         Híbrido
                     </option>
                     <option value="EAD">
@@ -82,7 +93,7 @@ function CreateClasses() {
                     <option value="Inativa">
                         Inativa
                     </option>
-                    <option value="Concluída">
+                    <option value="Concluida">
                         Concluída
                     </option>
 
@@ -92,7 +103,7 @@ function CreateClasses() {
                     <span>ÁREA PARA ADIÇÃO DE ALUNOS</span>
                 </div>
                 <button type="submit">
-                    Criar turma
+                    {isSubmitting ? 'Criando...' : 'Criar turma'}
                 </button>
 
             </form>
