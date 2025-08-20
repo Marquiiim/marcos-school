@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../sass/CreateClasses.module.css'
@@ -99,9 +99,10 @@ function CreateClasses() {
 
                 </select>
 
-                <div className={styles.button_student_add}>
-                    <span>ÁREA PARA ADIÇÃO DE ALUNOS</span>
-                </div>
+                    <Link to='/addstudent' className={styles.button_student_add}>
+                        ÁREA PARA ADIÇÃO DE ALUNOS
+                    </Link>
+                
                 <button type="submit">
                     {isSubmitting ? 'Criando...' : 'Criar turma'}
                 </button>
