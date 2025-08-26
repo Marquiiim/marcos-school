@@ -99,10 +99,10 @@ function CreateClasses() {
 
                 </select>
 
-                    <Link to='/addstudent' className={styles.button_student_add}>
-                        ÁREA PARA ADIÇÃO DE ALUNOS
-                    </Link>
-                
+                <Link to='/addstudent' className={styles.button_student_add}>
+                    ÁREA PARA ADIÇÃO DE ALUNOS
+                </Link>
+
                 <button type="submit">
                     {isSubmitting ? 'Criando...' : 'Criar turma'}
                 </button>

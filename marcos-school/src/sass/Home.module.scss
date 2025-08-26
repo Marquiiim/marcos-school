@@ -8,7 +8,7 @@ $color-text-light: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: $color-bg-darkest;
+  background: linear-gradient(135deg, lighten($color-bg-darkest, 10%) 0%, $color-bg-darkest 100%);
   padding: 2rem;
 
   .content {

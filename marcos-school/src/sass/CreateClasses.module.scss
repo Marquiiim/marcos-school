@@ -9,7 +9,7 @@ $color-text-light: #ffffff;
     align-items: center;
     flex-direction: column;
     gap: 3rem;
-    background: $color-bg-darkest;
+    background: linear-gradient(135deg, lighten($color-bg-darkest, 10%) 0%, $color-bg-darkest 100%);
     height: 100vh;
     padding: 2rem;
     box-sizing: border-box;
@@ -20,8 +20,14 @@ $color-text-light: #ffffff;
         align-items: center;
         flex-direction: column;
         gap: 1.5rem;
+        background: rgba(lighten($color-bg-darkest, 5%), 0.95);
+        border-radius: 16px;
+        padding: 2.5rem;
         width: 100%;
-        max-width: 500px;
+        max-width: 900px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba($color-primary-light, 0.1);
     }
 }
 
@@ -29,16 +35,19 @@ $color-text-light: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    background: $color-bg-darkest-op;
     color: $color-primary-light;
-    height: 20%;
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
+    background: rgba(lighten($color-bg-darkest, 5%), 0.95);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($color-primary-light, 0.1);
 }
 
 input {

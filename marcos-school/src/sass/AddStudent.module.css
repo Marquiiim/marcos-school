@@ -1,0 +1,169 @@
+.container {
+  background: linear-gradient(135deg, rgb(25, 37.5, 60) 0%, #0a0f18 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #ffffff;
+}
+.container .content {
+  background: rgba(17.5, 26.25, 42, 0.95);
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border: 1px solid rgba(58, 157, 248, 0.1);
+}
+.container .content h2 {
+  color: #3a9df8;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+.container .content h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #2d7cc6, #3a9df8);
+  border-radius: 3px;
+}
+.container .content .search_area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: rgba(10, 15, 24, 0.7);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(45, 124, 198, 0.2);
+}
+.container .content .search_area input {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background: rgb(22, 33, 52.8);
+  color: #ffffff;
+  font-size: 1rem;
+  margin-right: 1.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(45, 124, 198, 0.3);
+}
+.container .content .search_area input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.container .content .search_area input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.container .content .search_area input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(58, 157, 248, 0.4);
+  background: rgb(28, 42, 67.2);
+}
+.container .content .search_area span {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.container .content .content_students ul {
+  list-style: none;
+}
+.container .content .content_students ul li {
+  background: linear-gradient(90deg, rgba(45, 124, 198, 0.15), rgba(58, 157, 248, 0.1));
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(45, 124, 198, 0.2);
+}
+.container .content .content_students ul li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(45, 124, 198, 0.2);
+  background: linear-gradient(90deg, rgba(45, 124, 198, 0.2), rgba(58, 157, 248, 0.15));
+}
+.container .content .content_students ul li h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #3a9df8;
+}
+.container .content .content_students ul li h3 span {
+  margin-left: 1rem;
+}
+.container .content .content_students ul li div {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.container .content .content_students ul li div div {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+.container .content .content_students ul li div span {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.container .content .content_students ul li div button {
+  background: linear-gradient(90deg, #2d7cc6, #3a9df8);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(45, 124, 198, 0.3);
+}
+.container .content .content_students ul li div button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(45, 124, 198, 0.4);
+}
+.container .content .content_students ul li div button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  .container .content {
+    padding: 1.5rem;
+  }
+  .container .content .search_area {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .container .content .search_area input {
+    margin-right: 0;
+    width: 100%;
+  }
+  .container .content .content_students ul li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .container .content .content_students ul li div {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}/*# sourceMappingURL=AddStudent.module.css.map */
