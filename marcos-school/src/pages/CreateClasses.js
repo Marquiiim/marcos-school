@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../sass/CreateClasses.module.css'
@@ -32,7 +32,7 @@ function CreateClasses() {
 
     const classCreation = async (dataForm) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/classmanager', {
+            const response = await axios.post('http://localhost:5000/api/enrollclass', {
                 nome_disciplina: dataForm.nome_disciplina,
                 id_professor: userData.id_professor,
                 modalidade: dataForm.modalidade,
@@ -98,10 +98,6 @@ function CreateClasses() {
                     </option>
 
                 </select>
-
-                <Link to='/addstudent' className={styles.button_student_add}>
-                    ÁREA PARA ADIÇÃO DE ALUNOS
-                </Link>
 
                 <button type="submit">
                     {isSubmitting ? 'Criando...' : 'Criar turma'}

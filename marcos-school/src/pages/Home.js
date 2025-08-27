@@ -34,12 +34,12 @@ function Home() {
                             </Link>
                         </li>
                         <li>
-                            <Link>
-                                Controle de presença
+                            <Link to="/classcontrol">
+                                Controle de turma
                             </Link>
                         </li>
                         <li>
-                            <Link to="/create">
+                            <Link to="/createclass">
                                 Cadastro de Turmas
                             </Link>
                         </li>
