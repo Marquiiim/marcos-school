@@ -37,14 +37,37 @@ router.post('/fetchclass', async (req, res) => {
             WHERE minister_id = ?`, [id_professor]
         )
 
-        res.json({
+        res.status(200).json({
             success: true,
             data: rows,
             count: rows.length
         })
 
     } catch (err) {
-        console.error('[ERROR] Falha no login:', err)
+        console.error('[ERROR] Falha na consulta', err)
+        return res.status(500).json({
+            success: false,
+            error: 'Falha interna no servidor.'
+        })
+    }
+})
+
+router.delete('/removeclass/:id', async (req, res) => {
+    try {
+        const { id_classe } = req.params
+
+        const [result] = await pool.query(
+            `DELETE FROM classes
+            WHERE id = ?`, [id_classe]
+        )
+
+        res.status(200).json({
+            success: true,
+            message: "Usuário excluído com sucesso"
+        })
+
+    } catch (err) {
+        console.error('[ERROR] Falha na exclusão:', err)
         return res.status(500).json({
             success: false,
             error: 'Falha interna no servidor.'

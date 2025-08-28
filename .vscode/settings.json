@@ -14,9 +14,11 @@
         "dashed",
         "datestring",
         "divider",
+        "edit",
         "enrollclass",
         "fetchclass",
         "gradient",
+        "Graduation",
         "hide",
         "HOMEE",
         "Lexend",
@@ -26,8 +28,10 @@
         "modality",
         "outer",
         "pages",
+        "removeclass",
         "student",
         "students",
-        "Submitting"
+        "Submitting",
+        "trash"
     ]
 }

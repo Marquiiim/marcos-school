@@ -16,7 +16,6 @@ $color-text-light: #ffffff;
     }
 }
 
-
 .title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -26,18 +25,15 @@ $color-text-light: #ffffff;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    position: relative;
-
+    
     &::after {
         content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
+        display: block;
         width: 60px;
         height: 3px;
         background: linear-gradient(90deg, $color-primary, $color-primary-light);
         border-radius: 2px;
+        margin: 10px auto 0;
     }
 }
 
@@ -56,6 +52,7 @@ $color-text-light: #ffffff;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    animation: fadeIn 0.6s ease forwards;
 
     &::before {
         content: '';
@@ -65,7 +62,6 @@ $color-text-light: #ffffff;
         width: 100%;
         height: 3px;
         background: linear-gradient(90deg, $color-primary, $color-primary-light);
-        opacity: 0.8;
     }
 
     &:hover {
@@ -80,7 +76,6 @@ $color-text-light: #ffffff;
     font-weight: 600;
     margin-bottom: 1rem;
     color: $color-primary-light;
-    line-height: 1.4;
 }
 
 .classDetails {
@@ -95,7 +90,6 @@ $color-text-light: #ffffff;
     gap: 0.5rem;
     font-size: 0.95rem;
     margin: 0;
-    line-height: 1.4;
 }
 
 .infoLabel {
@@ -109,7 +103,6 @@ $color-text-light: #ffffff;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 500;
-    text-transform: uppercase;
 }
 
 .emptyMessage {
@@ -120,6 +113,106 @@ $color-text-light: #ffffff;
     background: rgba($color-bg-darkest-op, 0.5);
     border-radius: 12px;
     border: 2px dashed rgba($color-primary, 0.3);
+}
+
+.classActions {
+    display: flex;
+    justify-content: space-around;
+    gap: 12px;
+    margin-top: 1rem;
+}
+
+.actionLink, .actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, $color-primary, $color-primary-light);
+    color: $color-text-light;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(45, 124, 198, 0.4);
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(45, 124, 198, 0.6);
+    }
+    
+    svg {
+        font-size: 20px;
+        transition: transform 0.3s ease;
+    }
+    
+    &:hover svg {
+        transform: scale(1.1);
+    }
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $color-bg-darkest-op;
+    backdrop-filter: blur(10px);
+    border: 2px solid $color-primary-light;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-width: 300px;
+    text-align: center;
+
+    p {
+        color: $color-text-light;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    button {
+        background: linear-gradient(135deg, $color-primary, $color-primary-light);
+        color: $color-text-light;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        margin: 0.5rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(58, 157, 248, 0.4);
+        }
+
+        &:last-of-type {
+            background: transparent;
+            border: 1px solid $color-primary-light;
+            color: $color-primary-light;
+
+            &:hover {
+                background: rgba(58, 157, 248, 0.1);
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 768px) {
@@ -134,11 +227,6 @@ $color-text-light: #ffffff;
 
     .classesContainer {
         grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .classCard {
-        padding: 1.2rem;
     }
 
     .classInfo {
@@ -149,27 +237,5 @@ $color-text-light: #ffffff;
 
     .infoLabel {
         min-width: auto;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.classCard {
-    animation: fadeIn 0.6s ease forwards;
-
-    @for $i from 1 through 10 {
-        &:nth-child(#{$i}) {
-            animation-delay: $i * 0.1s;
-        }
     }
 }
