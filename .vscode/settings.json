@@ -17,6 +17,7 @@
         "edit",
         "enrollclass",
         "fetchclass",
+        "fetchstudents",
         "gradient",
         "Graduation",
         "hide",

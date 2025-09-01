@@ -1,6 +1,45 @@
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import styles from '../sass/AddStudent.module.css'
 
 function AddStudent() {
+
+    const [studentsData, setStudentsData] = useState([])
+    const [searchStudentApi, setSearchStudentApi] = useState('')
+
+    useEffect(() => {
+        const fetchStudents = async () => {
+            const response = await axios.post('http://localhost:5000/api/fetchstudents', {
+                name_student: ''
+            })
+            setStudentsData(response.data)
+        }
+        fetchStudents()
+    }, [])
+
+    const searchStudents = async (name_student = '') => {
+        setStudentsData([])
+        try {
+            const response = await axios.post('http://  localhost:5000/api/fetchstudents', {
+                name_student: searchStudentApi
+            })
+            setStudentsData(response.data)
+        } catch (err) {
+            console.error(`[ERRO] ${err.message}`)
+        }
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            searchStudents()
+        }
+    }
+
+    const formatDate = (datestring) => {
+        return new Date(datestring).toLocaleDateString('pt-BR')
+    }
 
     return (
         <div className={styles.container}>
@@ -10,33 +49,38 @@ function AddStudent() {
                 </h2>
 
                 <div className={styles.search_area}>
-                    <input type='text' placeholder='Procure pelo ID ou Nome do aluno' />
-                    <span>
-                        Matriculas:
-                    </span>
+                    <input
+                        type='text'
+                        placeholder='Procure pelo ID ou Nome do aluno'
+                        value={searchStudentApi}
+                        onChange={(e) => setSearchStudentApi(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
                 </div>
 
                 <section className={styles.content_students}>
                     <ul>
-                        <li>
-                            <h3>
-                                Aluno 01
-                                <span>
-                                    #1234
-                                </span>
-                            </h3>
-                            <div>
+                        {studentsData.map((student) => (
+                            <li key={student.id}>
+                                <h3>
+                                    {student.name}
+                                    <span>
+                                        #{student.id}
+                                    </span>
+                                </h3>
                                 <div>
-                                    Criado:
+                                    <div>
+                                        {formatDate(student.created_at)}
+                                    </div>
+                                    <span>
+                                        {student.status}
+                                    </span>
+                                    <button>
+                                        Adicionar
+                                    </button>
                                 </div>
-                                <span>
-                                    Ativo
-                                </span>
-                                <button>
-                                    Adicionar
-                                </button>
-                            </div>
-                        </li>
+                            </li>
+                        ))}
                     </ul>
                 </section>
             </div>

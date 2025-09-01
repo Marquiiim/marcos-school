@@ -29,7 +29,9 @@ function ClassControl() {
     const handleDelete = async (id_classe) => {
         try {
             await axios.delete(`http://localhost:5000/api/removeclass/${id_classe}`)
+            setClassesData(prev => prev.filter(classItem => classItem.id !== id_classe))
             setShowConfirm(false)
+            setClassToDelete(null)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
@@ -98,10 +100,7 @@ function ClassControl() {
                 {showConfirm && (
                     <div className={styles.modal}>
                         <p>Confirmar exclusão?</p>
-                        <button onClick={(e) => {
-                            e.preventDefault()
-                            handleDelete(classToDelete)
-                        }}>
+                        <button onClick={() => handleDelete(classToDelete)}>
                             Sim
                         </button>
                         <button onClick={() => setShowConfirm(false)}>Cancelar</button>

@@ -52,7 +52,35 @@ router.post('/fetchclass', async (req, res) => {
     }
 })
 
-router.delete('/removeclass/:id', async (req, res) => {
+router.post('/fetchstudents', async (req, res) => {
+    try {
+        const { name_student, limit = 10 } = req.body
+
+        if (name_student && name_student.trim() !== '') {
+            const [rows] = await pool.query(
+                `SELECT * FROM students 
+                WHERE name LIKE ?`, [`%${name_student.trim()}%`]
+            )
+            res.status(200).json(rows)
+
+        } else {
+            const [rows] = await pool.query(
+                `SELECT * FROM students 
+                LIMIT ?`, [parseInt(limit)]
+            )
+            res.status(200).json(rows)
+        }
+
+    } catch (err) {
+        console.error('[ERROR] Falha na consulta', err)
+        return res.status(500).json({
+            success: false,
+            error: 'Falha interna no servidor.'
+        })
+    }
+})
+
+router.delete('/removeclass/:id_classe', async (req, res) => {
     try {
         const { id_classe } = req.params
 
