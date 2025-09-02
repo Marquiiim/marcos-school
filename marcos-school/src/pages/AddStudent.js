@@ -51,7 +51,7 @@ function AddStudent() {
                 <div className={styles.search_area}>
                     <input
                         type='text'
-                        placeholder='Procure pelo ID ou Nome do aluno'
+                        placeholder='Procure pelo Nome do aluno'
                         value={searchStudentApi}
                         onChange={(e) => setSearchStudentApi(e.target.value)}
                         onKeyDown={handleKeyDown}
