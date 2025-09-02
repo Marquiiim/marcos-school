@@ -21,7 +21,7 @@ function AddStudent() {
     const searchStudents = async (name_student = '') => {
         setStudentsData([])
         try {
-            const response = await axios.post('http://  localhost:5000/api/fetchstudents', {
+            const response = await axios.post('http://localhost:5000/api/fetchstudents', {
                 name_student: searchStudentApi
             })
             setStudentsData(response.data)
