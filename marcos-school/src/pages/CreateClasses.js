@@ -93,9 +93,6 @@ function CreateClasses() {
                     <option value="Inativa">
                         Inativa
                     </option>
-                    <option value="Concluida">
-                        Concluída
-                    </option>
 
                 </select>
 

@@ -17,7 +17,7 @@ function ClassControl() {
 
         const fetchClass = async () => {
             try {
-                const response = await axios.post(`http://localhost:5000/api/fetchclass`, { id_professor: userData.id_professor })
+                const response = await axios.post(`http://localhost:5000/api/fetchclass`, { id_minister: userData.id_minister })
                 setClassesData(response.data.data)
             } catch (err) {
                 console.error(`[ERRO] ${err.message}`)

@@ -7,8 +7,10 @@ function AddStudent() {
 
     const [studentsData, setStudentsData] = useState([])
     const [searchStudentApi, setSearchStudentApi] = useState('')
+    const userData = JSON.parse(sessionStorage.getItem('currentUser'))
 
     useEffect(() => {
+
         const fetchStudents = async () => {
             const response = await axios.post('http://localhost:5000/api/fetchstudents', {
                 name_student: ''
@@ -18,7 +20,7 @@ function AddStudent() {
         fetchStudents()
     }, [])
 
-    const searchStudents = async (name_student = '') => {
+    const searchStudents = async () => {
         setStudentsData([])
         try {
             const response = await axios.post('http://localhost:5000/api/fetchstudents', {
@@ -35,6 +37,20 @@ function AddStudent() {
             e.preventDefault()
             searchStudents()
         }
+    }
+
+    const addStudentClass = async (id_student) => {
+        try {
+            const response = await axios.post(`http://localhost:5000/api/addstudentclass`, {
+                minister_id: userData.id_minister,
+                id_student: id_student,
+                // class_id: id_class
+            })
+            console.log(response.data)
+        } catch (err) {
+            console.error(`[ERRO] ${err.message}`)
+        }
+
     }
 
     const formatDate = (datestring) => {
@@ -75,7 +91,10 @@ function AddStudent() {
                                     <span>
                                         {student.status}
                                     </span>
-                                    <button>
+                                    <button onClick={(e) => {
+                                        e.preventDefault()
+                                        addStudentClass(student.id)
+                                    }}>
                                         Adicionar
                                     </button>
                                 </div>
