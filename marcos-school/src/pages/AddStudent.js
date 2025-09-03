@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 import styles from '../sass/AddStudent.module.css'
@@ -8,6 +9,7 @@ function AddStudent() {
     const [studentsData, setStudentsData] = useState([])
     const [searchStudentApi, setSearchStudentApi] = useState('')
     const userData = JSON.parse(sessionStorage.getItem('currentUser'))
+    const { class_id } = useParams()
 
     useEffect(() => {
 
@@ -44,7 +46,7 @@ function AddStudent() {
             const response = await axios.post(`http://localhost:5000/api/addstudentclass`, {
                 minister_id: userData.id_minister,
                 id_student: id_student,
-                // class_id: id_class
+                id_classe: class_id
             })
             console.log(response.data)
         } catch (err) {

@@ -79,7 +79,7 @@ function ClassControl() {
                                 </div>
 
                                 <div className={styles.classActions}>
-                                    <Link to='/addstudent' className={styles.actionLink}>
+                                    <Link to={`/addstudent/${classItem.id}`} className={styles.actionLink}>
                                         <FaGraduationCap className={styles.students} />
                                     </Link>
                                     <Link className={styles.actionLink}>

@@ -81,11 +81,11 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
 
 router.post('/addstudentclass', async (req, res) => {
     try {
-        const { minister_id, id_student, id_classe } = req.params
+        const { minister_id, id_student, id_classe } = req.body
 
         await pool.query(
             `INSERT INTO student_classes (minister_id ,student_id, class_id)
-            VALUES (?, ?, ?)`
+            VALUES (?, ?, ?)`, [minister_id, id_student, id_classe]
         )
 
         res.status(200).json({

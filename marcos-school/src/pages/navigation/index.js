@@ -13,7 +13,7 @@ export default function AppRoutes() {
             <Route path="/home" element={<Home />} />
             <Route path="/createclass" element={<CreateClass />} />
             <Route path="/classcontrol" element={<ClassControl />} />
-            <Route path="/addstudent" element={<AddStudent />} />
+            <Route path="/addstudent/:class_id" element={<AddStudent />} />
         </Routes>
     )
 }
