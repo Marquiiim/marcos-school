@@ -114,13 +114,19 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
 }
-.container .content .content_students ul li div span {
-  background: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
+.container .content .content_students ul li div .status {
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
+}
+.container .content .content_students ul li div .Ativo {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+.container .content .content_students ul li div .Inativo {
+  background: rgba(175, 76, 76, 0.2);
+  color: #af4c4c;
 }
 .container .content .content_students ul li div button {
   background: linear-gradient(90deg, #2d7cc6, #3a9df8);
@@ -139,6 +145,16 @@
 }
 .container .content .content_students ul li div button:active {
   transform: translateY(0);
+}
+.container .content .content_students ul li div button:disabled {
+  background-color: #6c757d;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.container .content .content_students ul li div button:disabled:hover {
+  opacity: 0.7;
+  transform: none;
 }
 
 @media (max-width: 768px) {

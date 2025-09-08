@@ -15,7 +15,8 @@ function AddStudent() {
 
         const fetchStudents = async () => {
             const response = await axios.post('http://localhost:5000/api/fetchstudents', {
-                name_student: ''
+                name_student: '',
+                class_id: class_id
             })
             setStudentsData(response.data)
         }
@@ -25,7 +26,7 @@ function AddStudent() {
     const searchStudents = async () => {
         setStudentsData([])
         try {
-            const response = await axios.post('http://localhost:5000/api/fetchstudents', {
+            const response = await axios.post('http://localhost:5000/api/searchstudents', {
                 name_student: searchStudentApi
             })
             setStudentsData(response.data)
@@ -45,8 +46,8 @@ function AddStudent() {
         try {
             const response = await axios.post(`http://localhost:5000/api/addstudentclass`, {
                 minister_id: userData.id_minister,
-                id_student: id_student,
-                id_classe: class_id
+                student_id: id_student,
+                class_id: class_id
             })
             console.log(response.data)
         } catch (err) {
@@ -87,16 +88,17 @@ function AddStudent() {
                                     </span>
                                 </h3>
                                 <div>
-                                    <div>
-                                        {formatDate(student.created_at)}
-                                    </div>
-                                    <span>
+                                    <span
+                                        className={`${styles.status} ${styles[student.status]}`}>
                                         {student.status}
                                     </span>
-                                    <button onClick={(e) => {
-                                        e.preventDefault()
-                                        addStudentClass(student.id)
-                                    }}>
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            addStudentClass(student.id)
+                                        }}
+                                        disabled={student.status === 'Inativo'}
+                                        >
                                         Adicionar
                                     </button>
                                 </div>
