@@ -36,7 +36,6 @@ function CreateClasses() {
                 nome_disciplina: dataForm.nome_disciplina,
                 id_professor: userData.id_professor,
                 modalidade: dataForm.modalidade,
-                status_turma: dataForm.status_turma
             })
             return response.data
         } catch (err) {
@@ -76,22 +75,6 @@ function CreateClasses() {
                     </option>
                     <option value="EAD">
                         EAD
-                    </option>
-
-                </select>
-
-                <select name="status_turma"
-                    required
-                    defaultValue="">
-
-                    <option value="" disabled>
-                        Status da turma
-                    </option>
-                    <option value="Ativa">
-                        Ativa
-                    </option>
-                    <option value="Inativa">
-                        Inativa
                     </option>
 
                 </select>
