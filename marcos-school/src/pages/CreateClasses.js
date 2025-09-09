@@ -34,7 +34,7 @@ function CreateClasses() {
         try {
             const response = await axios.post('http://localhost:5000/api/enrollclass', {
                 nome_disciplina: dataForm.nome_disciplina,
-                id_professor: userData.id_professor,
+                id_minister: userData.id_minister,
                 modalidade: dataForm.modalidade,
             })
             return response.data
