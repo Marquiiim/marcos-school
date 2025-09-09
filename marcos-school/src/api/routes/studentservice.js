@@ -24,7 +24,7 @@ router.post('/addstudentclass', async (req, res) => {
         } else {
             res.status(400).json({
                 success: false,
-                message: "[ERROR] Usuário inativo"
+                message: "[BACKEND] Usuário inativo"
             })
         }
 
@@ -32,7 +32,7 @@ router.post('/addstudentclass', async (req, res) => {
         console.error('[ERROR] Falha na consulta', err)
         return res.status(500).json({
             success: false,
-            error: '[ERROR] Falha interna no servidor.'
+            error: '[BACKEND] Falha interna no servidor.'
         })
     }
 })
@@ -64,7 +64,7 @@ router.post('/fetchstudents', async (req, res) => {
         console.error('[ERROR] Falha na consulta', err)
         return res.status(500).json({
             success: false,
-            error: '[ERROR] Falha interna no servidor.'
+            error: '[BACKEND] Falha interna no servidor.'
         })
     }
 })
@@ -92,7 +92,7 @@ router.post('/searchstudents', async (req, res) => {
         console.error('[ERROR] Falha na consulta', err)
         return res.status(500).json({
             success: false,
-            error: '[ERROR] Falha interna no servidor.'
+            error: '[BACKEND] Falha interna no servidor.'
         })
     }
 })

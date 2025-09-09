@@ -23,7 +23,7 @@ router.post('/enrollclass', async (req, res) => {
         console.error('[ERROR] Falha no login:', err)
         return res.status(500).json({
             success: false,
-            error: 'Falha interna no servidor.'
+            error: '[BACKEND] Falha interna no servidor.'
         })
     }
 })
@@ -40,14 +40,13 @@ router.post('/fetchclass', async (req, res) => {
         res.status(200).json({
             success: true,
             data: rows,
-            count: rows.length
         })
 
     } catch (err) {
         console.error('[ERROR] Falha na consulta', err)
         return res.status(500).json({
             success: false,
-            error: 'Falha interna no servidor.'
+            error: '[BACKEND] Falha interna no servidor.'
         })
     }
 })
@@ -63,14 +62,40 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Usuário excluído com sucesso"
+            message: "[BACKEND] Usuário excluído com sucesso"
         })
 
     } catch (err) {
         console.error('[ERROR] Falha na exclusão:', err)
         return res.status(500).json({
             success: false,
-            error: 'Falha interna no servidor.'
+            error: '[BACKEND] Falha interna no servidor.'
+        })
+    }
+})
+
+router.post('/studentsinclass', async (req, res) => {
+    try {
+        const { class_id } = req.body
+
+        const [rows] = await pool.query(
+            `SELECT s.*
+            FROM students s
+            INNER JOIN student_classes sc ON s.id = sc.student_id
+            WHERE sc.class_id = ?`, [class_id]
+        )
+
+        res.status(200).json({
+            success: true,
+            data: rows,
+            count: rows.length
+        })
+
+    } catch (err) {
+        console.error('[ERROR] Falha na consulta:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha interna no servidor.'
         })
     }
 })

@@ -7,12 +7,13 @@ import styles from '../sass/AddStudent.module.css'
 function AddStudent() {
 
     const [studentsData, setStudentsData] = useState([])
+    const [searchRefresh, setSearchRefresh] = useState(0)
     const [searchStudentApi, setSearchStudentApi] = useState('')
+    const [filterStudents, setFilterStudents] = useState(false)
     const userData = JSON.parse(sessionStorage.getItem('currentUser'))
     const { class_id } = useParams()
 
     useEffect(() => {
-
         const fetchStudents = async () => {
             const response = await axios.post('http://localhost:5000/api/fetchstudents', {
                 name_student: '',
@@ -21,7 +22,7 @@ function AddStudent() {
             setStudentsData(response.data)
         }
         fetchStudents()
-    }, [])
+    }, [class_id, searchRefresh])
 
     const searchStudents = async () => {
         setStudentsData([])
@@ -44,20 +45,28 @@ function AddStudent() {
 
     const addStudentClass = async (id_student) => {
         try {
-            const response = await axios.post(`http://localhost:5000/api/addstudentclass`, {
+            await axios.post(`http://localhost:5000/api/addstudentclass`, {
                 minister_id: userData.id_minister,
                 student_id: id_student,
                 class_id: class_id
             })
-            console.log(response.data)
+            setSearchRefresh(prev => prev + 1)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
-
     }
 
-    const formatDate = (datestring) => {
-        return new Date(datestring).toLocaleDateString('pt-BR')
+    const studentsInClass = async () => {
+        setStudentsData([])
+        try {
+            const response = await axios.post('http://localhost:5000/api/studentsinclass', {
+                class_id: class_id
+            })
+            setStudentsData(response.data.data)
+            setFilterStudents(true)
+        } catch (err) {
+            console.error(`[ERRO] ${err.message}`)
+        }
     }
 
     return (
@@ -75,6 +84,23 @@ function AddStudent() {
                         onChange={(e) => setSearchStudentApi(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
+                    {!filterStudents ?
+                        (
+                            <button onClick={(e) => {
+                                e.preventDefault()
+                                studentsInClass()
+                            }}>
+                                Alunos em classe
+                            </button>
+                        ) : (
+                            <button onClick={(e) => {
+                                e.preventDefault()
+                                setFilterStudents(false)
+                                setSearchRefresh(prev => prev + 1)
+                            }}>
+                                Adicionar Alunos
+                            </button>
+                        )}
                 </div>
 
                 <section className={styles.content_students}>
@@ -98,7 +124,7 @@ function AddStudent() {
                                             addStudentClass(student.id)
                                         }}
                                         disabled={student.status === 'Inativo'}
-                                        >
+                                    >
                                         Adicionar
                                     </button>
                                 </div>
