@@ -7,6 +7,7 @@ import styles from '../sass/AddStudent.module.css'
 function AddStudent() {
 
     const [studentsData, setStudentsData] = useState([])
+    const [studentsInClassData, setStudentsInClassData] = useState([])
     const [searchRefresh, setSearchRefresh] = useState(0)
     const [searchStudentApi, setSearchStudentApi] = useState('')
     const [filterStudents, setFilterStudents] = useState(false)
@@ -21,7 +22,19 @@ function AddStudent() {
             })
             setStudentsData(response.data)
         }
+
+        const fetchInitialStudentsInClass = async () => {
+            try {
+                const response = await axios.post('http://localhost:5000/api/studentsinclass', {
+                    class_id: class_id
+                })
+                setStudentsInClassData(response.data.data)
+            } catch (err) {
+                console.error(`[ERRO] ${err.message}`)
+            }
+        }
         fetchStudents()
+        fetchInitialStudentsInClass()
     }, [class_id, searchRefresh])
 
     const searchStudents = async () => {
@@ -56,13 +69,13 @@ function AddStudent() {
         }
     }
 
-    const studentsInClass = async () => {
+    const fetchStudentsInClass = async () => {
         setStudentsData([])
         try {
             const response = await axios.post('http://localhost:5000/api/studentsinclass', {
                 class_id: class_id
             })
-            setStudentsData(response.data.data)
+            setStudentsInClassData(response.data.data)
             setFilterStudents(true)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
@@ -88,7 +101,7 @@ function AddStudent() {
                         (
                             <button onClick={(e) => {
                                 e.preventDefault()
-                                studentsInClass()
+                                fetchStudentsInClass()
                             }}>
                                 Alunos em classe
                             </button>
@@ -105,31 +118,63 @@ function AddStudent() {
 
                 <section className={styles.content_students}>
                     <ul>
-                        {studentsData.map((student) => (
-                            <li key={student.id}>
-                                <h3>
-                                    {student.name}
-                                    <span>
-                                        #{student.id}
-                                    </span>
-                                </h3>
-                                <div>
-                                    <span
-                                        className={`${styles.status} ${styles[student.status]}`}>
-                                        {student.status}
-                                    </span>
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            addStudentClass(student.id)
-                                        }}
-                                        disabled={student.status === 'Inativo'}
-                                    >
-                                        Adicionar
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
+                        {filterStudents ?
+                            (
+                                studentsInClassData.map((student) => (
+                                    <li key={student.id}>
+                                        <h3>
+                                            {student.name}
+                                            <span>
+                                                #{student.id}
+                                            </span>
+                                        </h3>
+                                        <div>
+                                            <span
+                                                className={`${styles.status} ${styles[student.status]}`}>
+                                                {student.status}
+                                            </span>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    addStudentClass(student.id)
+                                                }}
+                                                disabled={student.status === 'Inativo'}
+                                            >
+                                                Em classe
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))
+                            )
+                            :
+                            (
+                                studentsData.map((student) => (
+                                    <li key={student.id}>
+                                        <h3>
+                                            {student.name}
+                                            <span>
+                                                #{student.id}
+                                            </span>
+                                        </h3>
+                                        <div>
+                                            <span
+                                                className={`${styles.status} ${styles[student.status]}`}>
+                                                {student.status}
+                                            </span>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    addStudentClass(student.id)
+                                                }}
+                                                disabled={student.status === 'Inativo'}
+                                            >
+                                                Adicionar
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))
+                            )
+                        }
                     </ul>
                 </section>
             </div>
