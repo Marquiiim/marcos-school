@@ -89,23 +89,32 @@ router.post('/fetchstudents', async (req, res) => {
 
 router.post('/searchstudents', async (req, res) => {
     try {
-        const { name_student, limit = 10 } = req.body
+        const { name_student, class_id, filter } = req.body
 
-        if (name_student && name_student.trim() !== '') {
-            const [rows] = await pool.query(
-                `SELECT * FROM students 
-                WHERE name LIKE ?`, [`%${name_student.trim()}%`]
-            )
-            res.status(200).json(rows)
-
+        if (filter === true) {
+            if (name_student && name_student.trim() !== '') {
+                const [rows] = await pool.query(
+                    `SELECT s.*, sc.*
+                    FROM students s
+                    INNER JOIN student_classes sc ON s.id = sc.student_id 
+                    WHERE s.name LIKE ?
+                    AND sc.class_id = ?`, [`%${name_student.trim()}%`, class_id]
+                )
+                res.status(200).json(rows)
+            }
         } else {
             const [rows] = await pool.query(
-                `SELECT * FROM students 
-                LIMIT ?`, [parseInt(limit)]
+                `SELECT s.*
+                FROM students s
+                WHERE s.name LIKE ?
+                AND s.id NOT IN (
+                    SELECT student_id
+                    FROM student_classes
+                    WHERE class_id = ?
+                )`, [`%${name_student.trim()}%`, class_id]
             )
             res.status(200).json(rows)
         }
-
     } catch (err) {
         console.error('[ERROR] Falha na consulta', err)
         return res.status(500).json({

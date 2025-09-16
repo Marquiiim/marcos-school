@@ -16,11 +16,15 @@ function AddStudent() {
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await axios.post('http://localhost:5000/api/fetchstudents', {
-                name_student: '',
-                class_id: class_id
-            })
-            setStudentsData(response.data)
+            try {
+                const response = await axios.post('http://localhost:5000/api/fetchstudents', {
+                    name_student: '',
+                    class_id: class_id
+                })
+                setStudentsData(response.data)
+            } catch (err) {
+                console.error(`[ERRO] ${err.message}`)
+            }
         }
 
         const fetchStudentsInClass = async () => {
@@ -41,7 +45,9 @@ function AddStudent() {
         setStudentsData([])
         try {
             const response = await axios.post('http://localhost:5000/api/searchstudents', {
-                name_student: searchStudentApi
+                name_student: searchStudentApi,
+                class_id: class_id,
+                filter: filterStudents
             })
             setStudentsData(response.data)
         } catch (err) {
@@ -95,22 +101,20 @@ function AddStudent() {
                         onChange={(e) => setSearchStudentApi(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
-                    {!filterStudents ?
+                    {filterStudents ?
                         (
                             <button onClick={(e) => {
                                 e.preventDefault()
-                                setFilterStudents(true)
-                                setSearchRefresh(prev => prev + 1)
+                                setFilterStudents(false)
                             }}>
-                                Alunos em classe
+                                Adicionar Alunos
                             </button>
                         ) : (
                             <button onClick={(e) => {
                                 e.preventDefault()
-                                setFilterStudents(false)
-                                setSearchRefresh(prev => prev + 1)
+                                setFilterStudents(true)
                             }}>
-                                Adicionar Alunos
+                                Alunos em classe
                             </button>
                         )}
                 </div>
