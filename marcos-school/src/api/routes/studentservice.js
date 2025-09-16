@@ -37,6 +37,24 @@ router.post('/addstudentclass', async (req, res) => {
     }
 })
 
+router.post('/removestudentclass', async (req, res) => {
+    try {
+        const { student_id } = req.body
+
+        await pool.query(
+            `DELETE FROM student_classes
+            WHERE student_id = ?`, [student_id]
+        )
+
+    } catch (err) {
+        console.error('[ERROR] Falha na consulta', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha interna no servidor.'
+        })
+    }
+})
+
 router.post('/fetchstudents', async (req, res) => {
     try {
         const { name_student, class_id, limit = 10 } = req.body
@@ -97,5 +115,30 @@ router.post('/searchstudents', async (req, res) => {
     }
 })
 
+router.post('/studentsinclass', async (req, res) => {
+    try {
+        const { class_id } = req.body
+
+        const [rows] = await pool.query(
+            `SELECT s.*
+            FROM students s
+            INNER JOIN student_classes sc ON s.id = sc.student_id
+            WHERE sc.class_id = ?`, [class_id]
+        )
+
+        res.status(200).json({
+            success: true,
+            data: rows,
+            count: rows.length
+        })
+
+    } catch (err) {
+        console.error('[ERROR] Falha na consulta:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha interna no servidor.'
+        })
+    }
+})
 
 module.exports = router

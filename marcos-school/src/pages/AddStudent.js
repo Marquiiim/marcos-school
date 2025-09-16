@@ -23,7 +23,7 @@ function AddStudent() {
             setStudentsData(response.data)
         }
 
-        const fetchInitialStudentsInClass = async () => {
+        const fetchStudentsInClass = async () => {
             try {
                 const response = await axios.post('http://localhost:5000/api/studentsinclass', {
                     class_id: class_id
@@ -34,7 +34,7 @@ function AddStudent() {
             }
         }
         fetchStudents()
-        fetchInitialStudentsInClass()
+        fetchStudentsInClass()
     }, [class_id, searchRefresh])
 
     const searchStudents = async () => {
@@ -69,14 +69,12 @@ function AddStudent() {
         }
     }
 
-    const fetchStudentsInClass = async () => {
-        setStudentsData([])
+    const removeStudentInClass = async (id_student) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/studentsinclass', {
-                class_id: class_id
+            await axios.post(`http://localhost:5000/api/removestudentclass`, {
+                student_id: id_student
             })
-            setStudentsInClassData(response.data.data)
-            setFilterStudents(true)
+            setSearchRefresh(prev => prev + 1)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
@@ -101,7 +99,8 @@ function AddStudent() {
                         (
                             <button onClick={(e) => {
                                 e.preventDefault()
-                                fetchStudentsInClass()
+                                setFilterStudents(true)
+                                setSearchRefresh(prev => prev + 1)
                             }}>
                                 Alunos em classe
                             </button>
@@ -136,11 +135,10 @@ function AddStudent() {
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault()
-                                                    addStudentClass(student.id)
+                                                    removeStudentInClass(student.id)
                                                 }}
-                                                disabled={student.status === 'Inativo'}
                                             >
-                                                Em classe
+                                                Remover
                                             </button>
                                         </div>
                                     </li>
