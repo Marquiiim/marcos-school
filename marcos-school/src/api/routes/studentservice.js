@@ -46,6 +46,11 @@ router.post('/removestudentclass', async (req, res) => {
             WHERE student_id = ?`, [student_id]
         )
 
+        res.status(200).json({
+            success: true,
+            message: "[BACKEND] Aluno removido com sucesso"
+        })
+
     } catch (err) {
         console.error('[ERROR] Falha na consulta', err)
         return res.status(500).json({
@@ -90,18 +95,17 @@ router.post('/fetchstudents', async (req, res) => {
 router.post('/searchstudents', async (req, res) => {
     try {
         const { name_student, class_id, filter } = req.body
+        const searchName = name_student ? `%${name_student.trim()}%` : `%`
 
         if (filter === true) {
-            if (name_student && name_student.trim() !== '') {
-                const [rows] = await pool.query(
-                    `SELECT s.*, sc.*
+            const [rows] = await pool.query(
+                `SELECT s.*, sc.*
                     FROM students s
                     INNER JOIN student_classes sc ON s.id = sc.student_id 
                     WHERE s.name LIKE ?
-                    AND sc.class_id = ?`, [`%${name_student.trim()}%`, class_id]
-                )
-                res.status(200).json(rows)
-            }
+                    AND sc.class_id = ?`, [searchName, class_id]
+            )
+            res.status(200).json(rows)
         } else {
             const [rows] = await pool.query(
                 `SELECT s.*
@@ -111,7 +115,7 @@ router.post('/searchstudents', async (req, res) => {
                     SELECT student_id
                     FROM student_classes
                     WHERE class_id = ?
-                )`, [`%${name_student.trim()}%`, class_id]
+                )`, [searchName, class_id]
             )
             res.status(200).json(rows)
         }
@@ -134,13 +138,7 @@ router.post('/studentsinclass', async (req, res) => {
             INNER JOIN student_classes sc ON s.id = sc.student_id
             WHERE sc.class_id = ?`, [class_id]
         )
-
-        res.status(200).json({
-            success: true,
-            data: rows,
-            count: rows.length
-        })
-
+        res.status(200).json(rows)
     } catch (err) {
         console.error('[ERROR] Falha na consulta:', err)
         return res.status(500).json({

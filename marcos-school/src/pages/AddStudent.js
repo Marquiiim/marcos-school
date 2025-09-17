@@ -7,7 +7,6 @@ import styles from '../sass/AddStudent.module.css'
 function AddStudent() {
 
     const [studentsData, setStudentsData] = useState([])
-    const [studentsInClassData, setStudentsInClassData] = useState([])
     const [searchRefresh, setSearchRefresh] = useState(0)
     const [searchStudentApi, setSearchStudentApi] = useState('')
     const [filterStudents, setFilterStudents] = useState(false)
@@ -26,23 +25,21 @@ function AddStudent() {
                 console.error(`[ERRO] ${err.message}`)
             }
         }
-
-        const fetchStudentsInClass = async () => {
-            try {
-                const response = await axios.post('http://localhost:5000/api/studentsinclass', {
-                    class_id: class_id
-                })
-                setStudentsInClassData(response.data.data)
-            } catch (err) {
-                console.error(`[ERRO] ${err.message}`)
-            }
-        }
         fetchStudents()
-        fetchStudentsInClass()
     }, [class_id, searchRefresh])
 
+    const fetchStudentsInClass = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/studentsinclass', {
+                class_id: class_id
+            })
+            setStudentsData(response.data)
+        } catch (err) {
+            console.error(`[ERRO] ${err.message}`)
+        }
+    }
+
     const searchStudents = async () => {
-        setStudentsData([])
         try {
             const response = await axios.post('http://localhost:5000/api/searchstudents', {
                 name_student: searchStudentApi,
@@ -55,12 +52,6 @@ function AddStudent() {
         }
     }
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault()
-            searchStudents()
-        }
-    }
 
     const addStudentClass = async (id_student) => {
         try {
@@ -81,8 +72,28 @@ function AddStudent() {
                 student_id: id_student
             })
             setSearchRefresh(prev => prev + 1)
+            setFilterStudents(false)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
+        }
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            searchStudents()
+        }
+    }
+
+    const toggleFilter = async (e) => {
+        e.preventDefault()
+        const newFilterState = !filterStudents
+        setFilterStudents(newFilterState)
+
+        if (newFilterState) {
+            await fetchStudentsInClass()
+        } else {
+            setSearchRefresh(prev => prev + 1)
         }
     }
 
@@ -101,81 +112,38 @@ function AddStudent() {
                         onChange={(e) => setSearchStudentApi(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
-                    {filterStudents ?
-                        (
-                            <button onClick={(e) => {
-                                e.preventDefault()
-                                setFilterStudents(false)
-                            }}>
-                                Adicionar Alunos
-                            </button>
-                        ) : (
-                            <button onClick={(e) => {
-                                e.preventDefault()
-                                setFilterStudents(true)
-                            }}>
-                                Alunos em classe
-                            </button>
-                        )}
+                    <button onClick={toggleFilter}>
+                        {filterStudents ? "Ver todos os alunos" : "Alunos em classe"}
+                    </button>
                 </div>
 
                 <section className={styles.content_students}>
                     <ul>
-                        {filterStudents ?
-                            (
-                                studentsInClassData.map((student) => (
-                                    <li key={student.id}>
-                                        <h3>
-                                            {student.name}
-                                            <span>
-                                                #{student.id}
-                                            </span>
-                                        </h3>
-                                        <div>
-                                            <span
-                                                className={`${styles.status} ${styles[student.status]}`}>
-                                                {student.status}
-                                            </span>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    removeStudentInClass(student.id)
-                                                }}
-                                            >
-                                                Remover
-                                            </button>
-                                        </div>
-                                    </li>
-                                ))
-                            )
-                            :
-                            (
-                                studentsData.map((student) => (
-                                    <li key={student.id}>
-                                        <h3>
-                                            {student.name}
-                                            <span>
-                                                #{student.id}
-                                            </span>
-                                        </h3>
-                                        <div>
-                                            <span
-                                                className={`${styles.status} ${styles[student.status]}`}>
-                                                {student.status}
-                                            </span>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    addStudentClass(student.id)
-                                                }}
-                                                disabled={student.status === 'Inativo'}
-                                            >
-                                                Adicionar
-                                            </button>
-                                        </div>
-                                    </li>
-                                ))
-                            )
+                        {studentsData.map((student) => (
+                            <li key={student.id}>
+                                <h3>
+                                    {student.name}
+                                    <span>
+                                        #{student.id}
+                                    </span>
+                                </h3>
+                                <div>
+                                    <span
+                                        className={`${styles.status} ${styles[student.status]}`}>
+                                        {student.status}
+                                    </span>
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            filterStudents ? removeStudentInClass(student.id) : addStudentClass(student.id)
+                                        }}
+                                        disabled={student.status === 'Inativo'}
+                                    >
+                                        {filterStudents ? "Remover" : "Adicionar"}
+                                    </button>
+                                </div>
+                            </li>
+                        ))
                         }
                     </ul>
                 </section>
