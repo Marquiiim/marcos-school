@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import axios from 'axios'
 import { FaGraduationCap, FaTrashAlt, FaWrench } from "react-icons/fa";
+import { BiCheck, BiCheckDouble } from "react-icons/bi";
 
 import styles from '../sass/ClassControl.module.css'
 
@@ -32,6 +33,16 @@ function ClassControl() {
             setClassesData(prev => prev.filter(classItem => classItem.id !== id_classe))
             setShowConfirm(false)
             setClassToDelete(null)
+        } catch (err) {
+            console.error(`[ERRO] ${err.message}`)
+        }
+    }
+
+    const toggleStatus = async (id_classe) => {
+        try {
+            await axios.post(`http://localhost:5000/api/togglestatus`, {
+                class_id: id_classe
+            })
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
@@ -80,17 +91,25 @@ function ClassControl() {
 
                                 <div className={styles.classActions}>
                                     <Link to={`/addstudent/${classItem.id}`} className={styles.actionLink}>
-                                        <FaGraduationCap className={styles.students} />
+                                        <FaGraduationCap className={styles.svg} />
                                     </Link>
                                     <Link className={styles.actionLink}>
-                                        <FaWrench className={styles.editClass} />
+                                        <FaWrench className={styles.svg} />
                                     </Link>
-                                    <button className={styles.actionLink} onClick={(e) => {
-                                        e.preventDefault()
-                                        setClassToDelete(classItem.id)
-                                        setShowConfirm(true)
-                                    }} >
-                                        <FaTrashAlt className={styles.trash} />
+                                    <button className={styles.actionLink}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setClassToDelete(classItem.id)
+                                            setShowConfirm(true)
+                                        }} >
+                                        <FaTrashAlt className={styles.svg} />
+                                    </button>
+                                    <button className={styles.actionLink}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            toggleStatus(classItem.id)
+                                        }}>
+                                        {classItem.class_status === 'Inativo' ? <BiCheckDouble className={styles.svg} /> : <BiCheck className={styles.svg} />}
                                     </button>
                                 </div>
                             </div>

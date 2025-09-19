@@ -113,7 +113,8 @@
   margin-top: 1rem;
 }
 
-.actionLink, .actionButton {
+.actionLink,
+.actionButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,15 +129,18 @@
   border: none;
   cursor: pointer;
 }
-.actionLink:hover, .actionButton:hover {
+.actionLink:hover,
+.actionButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(45, 124, 198, 0.6);
 }
-.actionLink svg, .actionButton svg {
+.actionLink .svg,
+.actionButton .svg {
   font-size: 20px;
   transition: transform 0.3s ease;
 }
-.actionLink:hover svg, .actionButton:hover svg {
+.actionLink .svg:hover,
+.actionButton .svg:hover {
   transform: scale(1.1);
 }
 

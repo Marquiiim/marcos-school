@@ -74,4 +74,23 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
     }
 })
 
+router.post('/togglestatus', async (req, res) => {
+    try {
+        const { class_id } = req.body
+
+        await pool.query(
+            `UPDATE classes
+            SET class_status = IF(class_status = 'Ativa', 'Inativa', 'Ativa')
+            WHERE id = ?`, [class_id]
+        )
+
+    } catch (err) {
+        console.error('[ERROR] Falha na exclusão:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha interna no servidor.'
+        })
+    }
+})
+
 module.exports = router
