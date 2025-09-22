@@ -9,7 +9,7 @@ router.post('/addstudentclass', async (req, res) => {
         const [[{ status }]] = await pool.query(
             `SELECT status
             FROM students
-            WHERE id = ?`, student_id
+            WHERE student_id = ?`, student_id
         )
 
         if (status === 'Ativo') {
@@ -75,7 +75,7 @@ router.post('/fetchstudents', async (req, res) => {
             const [existing] = await pool.query(
                 `SELECT s.*
                 FROM students s
-                LEFT JOIN student_classes sc ON s.id = sc.student_id AND sc.class_id = ?
+                LEFT JOIN student_classes sc ON s.student_id = sc.student_id AND sc.class_id = ?
                 WHERE sc.student_id IS NULL
                 LIMIT ?`,
                 [class_id, parseInt(limit)]
@@ -101,7 +101,7 @@ router.post('/searchstudents', async (req, res) => {
             const [rows] = await pool.query(
                 `SELECT s.*, sc.*
                     FROM students s
-                    INNER JOIN student_classes sc ON s.id = sc.student_id 
+                    INNER JOIN student_classes sc ON s.student_id = sc.student_id 
                     WHERE s.name LIKE ?
                     AND sc.class_id = ?`, [searchName, class_id]
             )
@@ -111,7 +111,7 @@ router.post('/searchstudents', async (req, res) => {
                 `SELECT s.*
                 FROM students s
                 WHERE s.name LIKE ?
-                AND s.id NOT IN (
+                AND s.student_id NOT IN (
                     SELECT student_id
                     FROM student_classes
                     WHERE class_id = ?
@@ -135,7 +135,7 @@ router.post('/studentsinclass', async (req, res) => {
         const [rows] = await pool.query(
             `SELECT s.*
             FROM students s
-            INNER JOIN student_classes sc ON s.id = sc.student_id
+            INNER JOIN student_classes sc ON s.student_id = sc.student_id
             WHERE sc.class_id = ?`, [class_id]
         )
         res.status(200).json(rows)

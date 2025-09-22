@@ -25,7 +25,7 @@ function ClassControl() {
             }
         }
         fetchClass()
-    }, [])
+    }, [classesData])
 
     const handleDelete = async (id_classe) => {
         try {

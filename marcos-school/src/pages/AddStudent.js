@@ -7,7 +7,7 @@ import styles from '../sass/AddStudent.module.css'
 function AddStudent() {
 
     const [studentsData, setStudentsData] = useState([])
-    const [searchRefresh, setSearchRefresh] = useState(0)
+    const [refresh, setRefresh] = useState(0)
     const [searchStudentApi, setSearchStudentApi] = useState('')
     const [filterStudents, setFilterStudents] = useState(false)
     const userData = JSON.parse(sessionStorage.getItem('currentUser'))
@@ -26,7 +26,7 @@ function AddStudent() {
             }
         }
         fetchStudents()
-    }, [class_id, searchRefresh])
+    }, [class_id, refresh])
 
     const fetchStudentsInClass = async () => {
         try {
@@ -60,7 +60,7 @@ function AddStudent() {
                 student_id: id_student,
                 class_id: class_id
             })
-            setSearchRefresh(prev => prev + 1)
+            await searchStudents(filterStudents)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
@@ -71,8 +71,7 @@ function AddStudent() {
             await axios.post(`http://localhost:5000/api/removestudentclass`, {
                 student_id: id_student
             })
-            setSearchRefresh(prev => prev + 1)
-            setFilterStudents(false)
+            await searchStudents(filterStudents)
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
@@ -93,7 +92,7 @@ function AddStudent() {
         if (newFilterState) {
             await fetchStudentsInClass()
         } else {
-            setSearchRefresh(prev => prev + 1)
+            setRefresh(prev => prev + 1)
         }
     }
 
@@ -124,7 +123,7 @@ function AddStudent() {
                                 <h3>
                                     {student.name}
                                     <span>
-                                        #{student.id}
+                                        #{student.student_id}
                                     </span>
                                 </h3>
                                 <div>
@@ -135,7 +134,7 @@ function AddStudent() {
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault()
-                                            filterStudents ? removeStudentInClass(student.id) : addStudentClass(student.id)
+                                            filterStudents ? removeStudentInClass(student.student_id) : addStudentClass(student.student_id)
                                         }}
                                         disabled={student.status === 'Inativo'}
                                     >
