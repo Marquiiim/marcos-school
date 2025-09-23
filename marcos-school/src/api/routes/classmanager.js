@@ -77,15 +77,62 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
 router.post('/togglestatus', async (req, res) => {
     try {
         const { class_id } = req.body
+        const dataAtual = new Date()
 
         await pool.query(
             `UPDATE classes
             SET class_status = IF(class_status = 'Ativa', 'Inativa', 'Ativa')
-            WHERE id = ?`, [class_id]
+            SET updated_at = ?
+            WHERE id = ?`, [class_id, dataAtual]
         )
 
     } catch (err) {
         console.error('[ERROR] Falha na exclusão:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha interna no servidor.'
+        })
+    }
+})
+
+router.post('/fetchinfoclass', async (req, res) => {
+    try {
+        const { class_id } = req.body
+
+        const [rows] = await pool.query(
+            `SELECT c.*, u.username as minister
+            FROM classes c
+            LEFT JOIN users u ON c.minister_id = u.id
+            WHERE c.id = ?`, [class_id]
+        )
+
+        res.status(200).json(rows)
+
+    } catch (err) {
+        console.error('[ERROR] Falha na exclusão:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha interna no servidor.'
+        })
+    }
+})
+
+router.post('/editclass/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const { changes } = req.body
+        const dataAtual = new Date()
+
+        await pool.query(
+            `UPDATE classes
+            SET discipline_name = ?,
+            modality = ?,
+            updated_at = ?
+            WHERE id = ?`, [changes.discipline_name, changes.modality, dataAtual, id]
+        )
+
+    } catch (err) {
+        console.error('[ERROR] Falha na alteração dos dados:', err)
         return res.status(500).json({
             success: false,
             error: '[BACKEND] Falha interna no servidor.'

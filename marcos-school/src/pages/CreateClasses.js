@@ -24,7 +24,7 @@ function CreateClasses() {
             await classCreation(data)
             formRef.current.reset()
             alert('[SISTEMA] Turma criada com sucesso.')
-            navigate('/home')
+            navigate('/classcontrol')
         } finally {
             setIsSubmitting(false)
         }
@@ -45,7 +45,7 @@ function CreateClasses() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.title_page}>
+            <div className={styles.title}>
                 <h2>
                     Área de criação de classe
                 </h2>

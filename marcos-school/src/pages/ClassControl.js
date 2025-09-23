@@ -93,7 +93,7 @@ function ClassControl() {
                                     <Link to={`/addstudent/${classItem.id}`} className={styles.actionLink}>
                                         <FaGraduationCap className={styles.svg} />
                                     </Link>
-                                    <Link className={styles.actionLink}>
+                                    <Link to={`/editclass/${classItem.id}`} className={styles.actionLink}>
                                         <FaWrench className={styles.svg} />
                                     </Link>
                                     <button className={styles.actionLink}
