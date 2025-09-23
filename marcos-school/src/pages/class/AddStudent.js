@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from '../sass/AddStudent.module.css'
+import styles from '../../sass/AddStudent.module.css'
 
 function AddStudent() {
 

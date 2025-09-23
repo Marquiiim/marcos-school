@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from '../sass/EditClass.module.css'
+import styles from '../../sass/EditClass.module.css'
 
 function EditClass() {
 

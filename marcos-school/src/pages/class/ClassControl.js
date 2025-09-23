@@ -4,7 +4,7 @@ import axios from 'axios'
 import { FaGraduationCap, FaTrashAlt, FaWrench } from "react-icons/fa";
 import { BiCheck, BiCheckDouble } from "react-icons/bi";
 
-import styles from '../sass/ClassControl.module.css'
+import styles from '../../sass/ClassControl.module.css'
 
 
 function ClassControl() {

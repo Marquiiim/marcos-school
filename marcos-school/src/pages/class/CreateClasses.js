@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-import styles from '../sass/CreateClasses.module.css'
+import styles from '../../sass/CreateClasses.module.css'
 
 function CreateClasses() {
 
@@ -56,11 +56,11 @@ function CreateClasses() {
                 className={styles.content_form}>
 
                 <input type="text"
-                    name="nome_disciplina"
+                    name="discipline_name"
                     placeholder="Nome da disciplina"
                     required />
 
-                <select name="modalidade"
+                <select name="modality"
                     required
                     defaultValue="">
 
