@@ -32,15 +32,27 @@ router.post('/fetchclass', async (req, res) => {
     try {
         const { id_minister } = req.body
 
-        const [rows] = await pool.query(
-            `SELECT * FROM classes
-            WHERE minister_id = ?`, [id_minister]
-        )
+        if (id_minister === 0) {
+            const [rows] = await pool.query(
+                `SELECT * FROM classes`
+            )
 
-        res.status(200).json({
-            success: true,
-            data: rows,
-        })
+            return res.status(200).json({
+                success: true,
+                data: rows,
+            })
+        } else {
+            const [rows] = await pool.query(
+                `SELECT * FROM classes
+            WHERE minister_id = ?`, [id_minister]
+            )
+
+            return res.status(200).json({
+                success: true,
+                data: rows,
+            })
+        }
+
 
     } catch (err) {
         console.error('[ERROR] Falha na consulta', err)
@@ -81,9 +93,9 @@ router.post('/togglestatus', async (req, res) => {
 
         await pool.query(
             `UPDATE classes
-            SET class_status = IF(class_status = 'Ativa', 'Inativa', 'Ativa')
-            SET updated_at = ?
-            WHERE id = ?`, [class_id, dataAtual]
+            SET class_status = IF(class_status = 'Ativa', 'Inativa', 'Ativa'),
+                updated_at = ?
+            WHERE id = ?`, [dataAtual, class_id]
         )
 
     } catch (err) {
@@ -99,14 +111,23 @@ router.post('/fetchinfoclass', async (req, res) => {
     try {
         const { class_id } = req.body
 
-        const [rows] = await pool.query(
-            `SELECT c.*, u.username as minister
-            FROM classes c
-            LEFT JOIN users u ON c.minister_id = u.id
-            WHERE c.id = ?`, [class_id]
-        )
-
-        res.status(200).json(rows)
+        if (class_id === 0) {
+            const [rows] = await pool.query(
+                `SELECT c.*, u.username as minister
+                FROM classes c
+                LEFT JOIN users u ON c.minister_id = u.id
+                ORDER BY c.created_at DESC`
+            )
+            return res.status(200).json(rows)
+        } else {
+            const [rows] = await pool.query(
+                `SELECT c.*, u.username as minister
+                FROM classes c
+                LEFT JOIN users u ON c.minister_id = u.id
+                WHERE c.id = ?`, [class_id]
+            )
+            return res.status(200).json(rows)
+        }
 
     } catch (err) {
         console.error('[ERROR] Falha na exclusão:', err)

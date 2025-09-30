@@ -17,12 +17,12 @@ router.post('/addstudentclass', async (req, res) => {
                 `INSERT INTO student_classes (minister_id ,student_id, class_id)
             VALUES (?, ?, ?)`, [minister_id, student_id, class_id]
             )
-            res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 message: "[OK] Usuário adicionado a turma"
             })
         } else {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "[BACKEND] Usuário inativo"
             })
@@ -69,7 +69,7 @@ router.post('/fetchstudents', async (req, res) => {
                 `SELECT * FROM students 
                 WHERE name LIKE ?`, [`%${name_student.trim()}%`]
             )
-            res.status(200).json(rows)
+            return res.status(200).json(rows)
 
         } else {
             const [existing] = await pool.query(
@@ -80,7 +80,7 @@ router.post('/fetchstudents', async (req, res) => {
                 LIMIT ?`,
                 [class_id, parseInt(limit)]
             )
-            res.status(200).json(existing)
+            return res.status(200).json(existing)
         }
 
     } catch (err) {
@@ -105,7 +105,7 @@ router.post('/searchstudents', async (req, res) => {
                     WHERE s.name LIKE ?
                     AND sc.class_id = ?`, [searchName, class_id]
             )
-            res.status(200).json(rows)
+            return res.status(200).json(rows)
         } else {
             const [rows] = await pool.query(
                 `SELECT s.*
@@ -117,7 +117,7 @@ router.post('/searchstudents', async (req, res) => {
                     WHERE class_id = ?
                 )`, [searchName, class_id]
             )
-            res.status(200).json(rows)
+            return res.status(200).json(rows)
         }
     } catch (err) {
         console.error('[ERROR] Falha na consulta', err)

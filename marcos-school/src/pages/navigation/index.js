@@ -6,6 +6,7 @@ import CreateClass from '../class/CreateClasses'
 import AddStudent from '../class/AddStudent'
 import ClassControl from '../class/ClassControl'
 import EditClass from '../class/EditClass'
+import ListOfClasses from '../class/ListOfClasses'
 
 export default function AppRoutes() {
 
@@ -13,8 +14,9 @@ export default function AppRoutes() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/createclass" element={<CreateClass />} />
             <Route path="/classcontrol" element={<ClassControl />} />
+            <Route path="/createclass" element={<CreateClass />} />
+            <Route path="/listofclasses" element={<ListOfClasses />} />
 
             <Route path="/addstudent/:class_id" element={<AddStudent />} />
             <Route path="/editclass/:class_id" element={<EditClass />} />

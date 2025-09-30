@@ -29,7 +29,7 @@ function Home() {
                 <nav className={styles.nav_system} >
                     <ul>
                         <li>
-                            <Link>
+                            <Link to="/listofclasses">
                                 Lista de aulas
                             </Link>
                         </li>
