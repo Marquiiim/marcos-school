@@ -29,22 +29,22 @@ function ListOfClasses() {
                     <ul className={styles.content}>
                         <li data-label="Disciplina">
                             <span>
-                                {classes.discipline_name || 'N/A'} - {classes.id || 'N/A'}
+                                {classes.discipline_name || 'N/A'} - #{classes.id || 'N/A'}
                             </span>
                         </li>
                         <li data-label="Modalidade">
                             <span>{classes.modality || 'N/A'}</span>
                         </li>
                         <li data-label="Status">
-                            <span className={classes.status === 'Inativa' ? styles.inactive : ''}>
-                                {classes.status || 'N/A'}
+                            <span className={classes.class_status === 'Inativa' ? styles.inactive : ''}>
+                                {classes.class_status || 'N/A'}
                             </span>
                         </li>
                         <li data-label="Criada">
                             <span>{classes.created_at ? new Date(classes.created_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
                         </li>
                         <li data-label="Atualizada">
-                            <span>{classes.updated_at || 'N/A'}</span>
+                            <span>{classes.updated_at ? new Date(classes.updated_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
                         </li>
                         <li data-label="Professor">
                             <span>{classes.minister || 'N/A'}</span>
