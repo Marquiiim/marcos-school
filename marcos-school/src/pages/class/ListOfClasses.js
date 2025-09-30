@@ -10,11 +10,11 @@ function ListOfClasses() {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await axios.post(`http://localhost:5000/api/fetchclass`, {
-                    id_minister: 0
+                const response = await axios.post(`http://localhost:5000/api/fetchinfoclass`, {
+                    class_id: 0
                 })
-                console.log(response.data.data)
-                setDataClasses(response.data.data)
+                console.log(response.data)
+                setDataClasses(response.data)
             } catch (err) {
                 console.error(`[ERRO] ${err.message}`)
             }
@@ -24,6 +24,9 @@ function ListOfClasses() {
 
     return (
         <div className={styles.container}>
+            <h1>
+                Lista de aulas da instituição
+            </h1>
             {dataClasses.map((classes) => (
                 <div key={classes.id} className={styles.itemContainer}>
                     <ul className={styles.content}>

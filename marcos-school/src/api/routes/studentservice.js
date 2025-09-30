@@ -5,10 +5,10 @@ const pool = require('../bd/connectionBD')
 router.post('/addstudentclass', async (req, res) => {
     try {
         const { minister_id, student_id, class_id } = req.body
+        const dataAtual = new Date()
 
         const [[{ status }]] = await pool.query(
-            `SELECT status
-            FROM students
+            `SELECT status FROM students
             WHERE student_id = ?`, student_id
         )
 
@@ -17,6 +17,13 @@ router.post('/addstudentclass', async (req, res) => {
                 `INSERT INTO student_classes (minister_id ,student_id, class_id)
             VALUES (?, ?, ?)`, [minister_id, student_id, class_id]
             )
+
+            await pool.query(
+                `UPDATE classes
+                SET updated_at = ?
+                WHERE id = ?`, [dataAtual, class_id]
+            )
+
             return res.status(200).json({
                 success: true,
                 message: "[OK] Usuário adicionado a turma"

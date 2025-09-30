@@ -116,6 +116,7 @@ router.post('/fetchinfoclass', async (req, res) => {
                 `SELECT c.*, u.username as minister
                 FROM classes c
                 LEFT JOIN users u ON c.minister_id = u.id
+                WHERE c.class_status = 'Ativa'
                 ORDER BY c.created_at DESC`
             )
             return res.status(200).json(rows)
