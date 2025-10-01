@@ -14,6 +14,12 @@ app.use('/api', AuthControl)
 app.use('/api', ClassManager)
 app.use('/api', StudentService)
 
+app.use((req, res, next) => {
+    req.requestTimestamp = new Date().toLocaleString('pt-BR')
+    req.requestCurrentdate = new Date()
+    next()
+})
+
 app.listen(5000, () => {
     console.log('[Sucesso] Servidor rodando na porta 5000')
 })
