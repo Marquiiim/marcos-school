@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import axios from 'axios'
-import { FaGraduationCap, FaTrashAlt, FaWrench } from "react-icons/fa";
+import { FaGraduationCap, FaTrashAlt, FaWrench, FaAddressBook } from "react-icons/fa";
 import { BiCheck, BiCheckDouble } from "react-icons/bi";
 
 import styles from '../../sass/ClassControl.module.css'
@@ -12,10 +12,9 @@ function ClassControl() {
     const [classesData, setClassesData] = useState([])
     const [showConfirm, setShowConfirm] = useState(false)
     const [classToDelete, setClassToDelete] = useState(null)
+    const userData = JSON.parse(sessionStorage.getItem('currentUser'))
 
     useEffect(() => {
-        const userData = JSON.parse(sessionStorage.getItem('currentUser'))
-
         const fetchClass = async () => {
             try {
                 const response = await axios.post(`http://localhost:5000/api/fetchclass`, { id_minister: userData.id_minister })
@@ -25,7 +24,7 @@ function ClassControl() {
             }
         }
         fetchClass()
-    }, [classesData])
+    }, [userData])
 
     const handleDelete = async (id_classe) => {
         try {
@@ -92,6 +91,9 @@ function ClassControl() {
                                 <div className={styles.classActions}>
                                     <Link to={`/addstudent/${classItem.id}`} className={styles.actionLink}>
                                         <FaGraduationCap className={styles.svg} />
+                                    </Link>
+                                    <Link to={`/frequency/${classItem.id}`} className={styles.actionLink}>
+                                        <FaAddressBook className={styles.svg} />
                                     </Link>
                                     <Link to={`/editclass/${classItem.id}`} className={styles.actionLink}>
                                         <FaWrench className={styles.svg} />

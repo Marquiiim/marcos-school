@@ -100,7 +100,7 @@ function AddStudent() {
         <div className={styles.container}>
             <div className={styles.content}>
                 <h2>
-                    Área de adição de alunos na classe
+                    Área de adição de alunos em classe
                 </h2>
 
                 <div className={styles.search_area}>

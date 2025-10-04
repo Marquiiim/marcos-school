@@ -7,6 +7,7 @@ import AddStudent from '../class/AddStudent'
 import ClassControl from '../class/ClassControl'
 import EditClass from '../class/EditClass'
 import ListOfClasses from '../class/ListOfClasses'
+import Frequency from '../class/Frequency'
 
 export default function AppRoutes() {
 
@@ -20,6 +21,7 @@ export default function AppRoutes() {
 
             <Route path="/addstudent/:class_id" element={<AddStudent />} />
             <Route path="/editclass/:class_id" element={<EditClass />} />
+            <Route path="/frequency/:class_id" element={<Frequency />} />
         </Routes>
     )
 }
