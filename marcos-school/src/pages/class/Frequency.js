@@ -46,7 +46,10 @@ function Frequency() {
                                         className={`${styles.status} ${styles[student.status]}`}>
                                         {student.status}
                                     </span>
-                                    <button>
+
+                                    <button
+                                        disabled={student.status === "Inativo"}>
+                                        {student.status === "Ativo" ? "Marcar presença" : "Inativo"}
                                     </button>
                                 </div>
                             </li>
