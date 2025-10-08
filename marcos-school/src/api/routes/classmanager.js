@@ -164,4 +164,120 @@ router.post('/editclass/:id', async (req, res) => {
     }
 })
 
+router.post('/frequency', async (req, res) => {
+    let Datelogger
+
+    const daysMap = {
+        0: 'Domingo',
+        1: 'Segunda-feira',
+        2: 'Terça-feira',
+        3: 'Quarta-feira',
+        4: 'Quinta-feira',
+        5: 'Sexta-feira',
+        6: 'Sábado'
+    }
+
+    const getWeekStart = (date = new Date()) => {
+        const d = new Date(date)
+        const day = d.getDay()
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1)
+        return new Date(d.setDate(diff)).toISOString().split('T')[0]
+    }
+
+    const getCurrentDay = () => {
+        return daysMap[new Date().getDay()]
+    }
+
+    const createEmptyWeek = (weekStart) => {
+        const weekDates = {}
+        const start = new Date(weekStart)
+
+        ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'].forEach((day, index) => {
+            const date = new Date(start)
+            date.setDate(start.getDate() + index)
+            weekDates[day] = {
+                date: date.toISOString().split('T')[0],
+                present: null,
+                arrival_time: null,
+                notes: ""
+            }
+        })
+        return weekDates
+    }
+
+    const updateSummary = (attendanceData) => {
+        const week = attendanceData.week
+        let daysPresent = 0
+        let daysAbsent = 0
+
+        Object.values(week).forEach(day => {
+            if (day.present === true) daysPresent++
+            if (day.present === false) daysAbsent++
+        })
+
+        const daysPending = 5 - daysPresent - daysPending
+        const attendanceRate = (daysPresent / 5) * 100
+
+        attendanceData.summary = {
+            total_days: 5,
+            days_present: daysPresent,
+            days_absent: daysAbsent,
+            days_pending: daysPending,
+            attendance_rate: Math.round(attendanceRate * 100) / 100
+        }
+        return attendanceData
+    }
+
+    try {
+        const { student_id, class_id } = req.body
+
+        const weekStart = getWeekStart()
+        const currentDay = getCurrentDay()
+
+        const emptyWeek = createEmptyWeek(weekStart)
+        let attendanceData = {
+            week: emptyWeek,
+            last_update: new Date().toISOString().split('T')[0],
+            summary: {
+                total_days: 5,
+                days_present: 0,
+                days_absent: 0,
+                days_pending: 5,
+                attendance_rate: 0
+            }
+        }
+
+        attendanceData = updateSummary(attendanceData)
+
+        await pool.query(
+            `INSERT INTO attendance (
+            student_id,
+            class_id,
+            week_start,
+            attendance_data
+            ) VALUES (?, ?, ?, ?)`, [student_id, class_id, weekStart, JSON.stringify(attendanceData)]
+        )
+
+        return res.status(200).json({
+            success: true,
+            message: '[BACKEND] Frequência registrada com sucesso.',
+            data: {
+                student_id,
+                class_id,
+                week_start: weekStart,
+                current_day: currentDay
+            },
+            timestamp: Datelogger
+        })
+
+    } catch (err) {
+        console.error('[BACKEND] Falha na alteração dos dados:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha ao tentar alterar os dados.',
+            timestamp: `${Datelogger}`
+        })
+    }
+})
+
 module.exports = router
