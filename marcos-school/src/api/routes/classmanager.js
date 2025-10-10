@@ -166,8 +166,8 @@ router.post('/editclass/:id', async (req, res) => {
 })
 
 router.post('/frequency', async (req, res) => {
-    let Datelogger
     const currentDate = new Date()
+    let Datelogger = currentDate.toLocaleString('pt-BR')
 
     try {
         const { student_id, class_id, present, arrival_time, notes } = req.body
@@ -254,16 +254,17 @@ router.post('/frequency', async (req, res) => {
             return res.status(200).json({
                 success: true,
                 message: '[BACKEND] Frequência registrada com sucesso.',
-                timestamp: `${Datelogger}`
+                timestamp: Datelogger
             })
 
         } else {
             const week = {}
             const start = new Date(weekStart)
 
-            Object.entries(daysMap).forEach(([dayNumber, dayName]) => {
-                const date = new Date(startDate)
-                date.setDate(startDate.getDate() + (parseInt(dayNumber) - 1))
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(start)
+                date.setDate(start.getDate() + i)
+                const dayName = daysMap[date.getDay()]
 
                 week[dayName] = {
                     date: date.toISOString().split('T')[0],
@@ -271,7 +272,7 @@ router.post('/frequency', async (req, res) => {
                     arrival_time: null,
                     notes: ""
                 }
-            })
+            }
 
             week[currentDay] = {
                 date: new Date().toISOString().split('T')[0],
@@ -283,8 +284,10 @@ router.post('/frequency', async (req, res) => {
             attendanceData = {
                 week: week,
                 last_update: new Date().toISOString().split('T')[0],
-                summary: updateSummary(week)
+                summary: {}
             }
+
+            attendanceData = updateSummary(attendanceData)
 
             await pool.query(
                 `INSERT INTO attendance (
@@ -299,7 +302,7 @@ router.post('/frequency', async (req, res) => {
         res.status(200).json({
             success: true,
             message: '[BACKEND] Frequência registrada com sucesso.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
 
     } catch (err) {
@@ -307,7 +310,7 @@ router.post('/frequency', async (req, res) => {
         return res.status(500).json({
             success: false,
             error: '[BACKEND] Falha ao tentar alterar os dados.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
     }
 })
