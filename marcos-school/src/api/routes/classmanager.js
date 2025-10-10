@@ -19,7 +19,7 @@ router.post('/enrollclass', async (req, res) => {
         return res.status(200).json({
             success: true,
             message: '[BACKEND] Turma criada com sucesso.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
 
     } catch (err) {
@@ -27,7 +27,7 @@ router.post('/enrollclass', async (req, res) => {
         return res.status(500).json({
             success: false,
             error: '[BACKEND] Falha ao criar turma.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
     }
 })
@@ -69,7 +69,7 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
         res.status(200).json({
             success: true,
             message: "[BACKEND] Usuário excluído com sucesso.",
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
 
     } catch (err) {
@@ -77,7 +77,7 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
         return res.status(500).json({
             success: false,
             error: '[BACKEND] Falha ao excluir classe.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
     }
 })
@@ -101,7 +101,7 @@ router.post('/togglestatus', async (req, res) => {
         return res.status(500).json({
             success: false,
             error: '[BACKEND] Falha ao alterar o status da classe.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
     }
 })
@@ -160,7 +160,7 @@ router.post('/editclass/:id', async (req, res) => {
         return res.status(500).json({
             success: false,
             error: '[BACKEND] Falha ao tentar alterar os dados.',
-            timestamp: `${Datelogger}`
+            timestamp: Datelogger
         })
     }
 })
