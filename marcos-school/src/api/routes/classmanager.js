@@ -140,6 +140,7 @@ router.post('/fetchinfoclass', async (req, res) => {
 
 router.post('/editclass/:id', async (req, res) => {
     let Datelogger
+
     try {
         const { id } = req.params
         const { changes } = req.body
@@ -166,108 +167,139 @@ router.post('/editclass/:id', async (req, res) => {
 
 router.post('/frequency', async (req, res) => {
     let Datelogger
-
-    const daysMap = {
-        0: 'Domingo',
-        1: 'Segunda-feira',
-        2: 'Terça-feira',
-        3: 'Quarta-feira',
-        4: 'Quinta-feira',
-        5: 'Sexta-feira',
-        6: 'Sábado'
-    }
-
-    const getWeekStart = (date = new Date()) => {
-        const d = new Date(date)
-        const day = d.getDay()
-        const diff = d.getDate() - day + (day === 0 ? -6 : 1)
-        return new Date(d.setDate(diff)).toISOString().split('T')[0]
-    }
-
-    const getCurrentDay = () => {
-        return daysMap[new Date().getDay()]
-    }
-
-    const createEmptyWeek = (weekStart) => {
-        const weekDates = {}
-        const start = new Date(weekStart)
-
-        ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'].forEach((day, index) => {
-            const date = new Date(start)
-            date.setDate(start.getDate() + index)
-            weekDates[day] = {
-                date: date.toISOString().split('T')[0],
-                present: null,
-                arrival_time: null,
-                notes: ""
-            }
-        })
-        return weekDates
-    }
-
-    const updateSummary = (attendanceData) => {
-        const week = attendanceData.week
-        let daysPresent = 0
-        let daysAbsent = 0
-
-        Object.values(week).forEach(day => {
-            if (day.present === true) daysPresent++
-            if (day.present === false) daysAbsent++
-        })
-
-        const daysPending = 5 - daysPresent - daysPending
-        const attendanceRate = (daysPresent / 5) * 100
-
-        attendanceData.summary = {
-            total_days: 5,
-            days_present: daysPresent,
-            days_absent: daysAbsent,
-            days_pending: daysPending,
-            attendance_rate: Math.round(attendanceRate * 100) / 100
-        }
-        return attendanceData
-    }
+    const currentDate = new Date()
 
     try {
-        const { student_id, class_id } = req.body
+        const { student_id, class_id, present, arrival_time, notes } = req.body
+
+        const daysMap = {
+            0: 'Domingo',
+            1: 'Segunda-feira',
+            2: 'Terça-feira',
+            3: 'Quarta-feira',
+            4: 'Quinta-feira',
+            5: 'Sexta-feira',
+            6: 'Sábado'
+        }
+
+        const getWeekStart = (date = new Date()) => {
+            const d = new Date(date)
+            const day = d.getDay()
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1)
+            return new Date(d.setDate(diff)).toISOString().split('T')[0]
+        }
+
+        const getCurrentDay = () => {
+            return daysMap[new Date().getDay()]
+        }
+
+        const updateSummary = (attendanceData) => {
+            const week = attendanceData.week
+            let daysPresent = 0
+            let daysAbsent = 0
+
+            Object.values(week).forEach(day => {
+                if (day.present === true) daysPresent++
+                if (day.present === false) daysAbsent++
+            })
+
+            const daysPending = 5 - daysPresent - daysAbsent
+            const attendanceRate = (daysPresent / 5) * 100
+
+            attendanceData.summary = {
+                total_days: 5,
+                days_present: daysPresent,
+                days_absent: daysAbsent,
+                days_pending: daysPending,
+                attendance_rate: Math.round(attendanceRate * 100) / 100
+            }
+            return attendanceData
+        }
 
         const weekStart = getWeekStart()
         const currentDay = getCurrentDay()
 
-        const emptyWeek = createEmptyWeek(weekStart)
-        let attendanceData = {
-            week: emptyWeek,
-            last_update: new Date().toISOString().split('T')[0],
-            summary: {
-                total_days: 5,
-                days_present: 0,
-                days_absent: 0,
-                days_pending: 5,
-                attendance_rate: 0
+        const [existingRecords] = await pool.query(
+            `SELECT id, attendance_data from attendance
+            WHERE student_id = ? 
+            AND class_id = ? 
+            AND week_start = ?`, [student_id, class_id, weekStart]
+        )
+
+        let attendanceData
+
+        if (existingRecords.length > 0) {
+            attendanceData = JSON.parse(existingRecords[0].attendance_data)
+
+            if (attendanceData.week[currentDay]) {
+                attendanceData.week[currentDay] = {
+                    ...attendanceData.week[currentDay],
+                    present: present,
+                    arrival_time: arrival_time,
+                    notes: notes || ""
+                }
             }
-        }
 
-        attendanceData = updateSummary(attendanceData)
+            attendanceData.last_update = currentDate.toISOString().split('T')[0]
+            attendanceData = updateSummary(attendanceData)
 
-        await pool.query(
-            `INSERT INTO attendance (
+            await pool.query(
+                `UPDATE attendance
+                SET attendance_data = ?, created_at = now()
+                WHERE student_id = ? 
+                AND class_id = ? 
+                AND week_start = ?`, [JSON.stringify(attendanceData), student_id, class_id, weekStart]
+            )
+
+            return res.status(200).json({
+                success: true,
+                message: '[BACKEND] Frequência registrada com sucesso.',
+                timestamp: `${Datelogger}`
+            })
+
+        } else {
+            const week = {}
+            const start = new Date(weekStart)
+
+            Object.entries(daysMap).forEach(([dayNumber, dayName]) => {
+                const date = new Date(startDate)
+                date.setDate(startDate.getDate() + (parseInt(dayNumber) - 1))
+
+                week[dayName] = {
+                    date: date.toISOString().split('T')[0],
+                    present: null,
+                    arrival_time: null,
+                    notes: ""
+                }
+            })
+
+            week[currentDay] = {
+                date: new Date().toISOString().split('T')[0],
+                present: present,
+                arrival_time: arrival_time,
+                notes: notes || ""
+            }
+
+            attendanceData = {
+                week: week,
+                last_update: new Date().toISOString().split('T')[0],
+                summary: updateSummary(week)
+            }
+
+            await pool.query(
+                `INSERT INTO attendance (
             student_id,
             class_id,
             week_start,
             attendance_data
             ) VALUES (?, ?, ?, ?)`, [student_id, class_id, weekStart, JSON.stringify(attendanceData)]
-        )
+            )
+        }
 
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: '[BACKEND] Frequência registrada com sucesso.',
-            data: {
-                student_id,
-                class_id,
-                week_start: weekStart,
-                current_day: currentDay
-            },
-            timestamp: Datelogger
+            timestamp: `${Datelogger}`
         })
 
     } catch (err) {
