@@ -173,13 +173,11 @@ router.post('/frequency', async (req, res) => {
         const { student_id, class_id, present, arrival_time, notes } = req.body
 
         const daysMap = {
-            0: 'Domingo',
             1: 'Segunda-feira',
             2: 'Terça-feira',
             3: 'Quarta-feira',
             4: 'Quinta-feira',
-            5: 'Sexta-feira',
-            6: 'Sábado'
+            5: 'Sexta-feira'
         }
 
         const getWeekStart = (date = new Date()) => {
@@ -203,15 +201,11 @@ router.post('/frequency', async (req, res) => {
                 if (day.present === false) daysAbsent++
             })
 
-            const daysPending = 5 - daysPresent - daysAbsent
-            const attendanceRate = (daysPresent / 5) * 100
-
             attendanceData.summary = {
                 total_days: 5,
                 days_present: daysPresent,
                 days_absent: daysAbsent,
-                days_pending: daysPending,
-                attendance_rate: Math.round(attendanceRate * 100) / 100
+                days_pending: 5 - daysPresent - daysAbsent
             }
             return attendanceData
         }
@@ -261,10 +255,10 @@ router.post('/frequency', async (req, res) => {
             const week = {}
             const start = new Date(weekStart)
 
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 5; i++) {
                 const date = new Date(start)
                 date.setDate(start.getDate() + i)
-                const dayName = daysMap[date.getDay()]
+                const dayName = daysMap[i + 1]
 
                 week[dayName] = {
                     date: date.toISOString().split('T')[0],
