@@ -17,7 +17,6 @@ function Frequency() {
                     class_id: class_id
                 })
                 setStudentsData(response.data)
-                console.log(response.data)
             } catch (err) {
                 console.error(`[ERRO] ${err.message}`)
             }
@@ -34,12 +33,15 @@ function Frequency() {
                 arrival_time: present ? arrival_time : null,
                 notes: notes
             })
-            console.log(response.data)
-
+            if (response.data?.success) {
+                setStudentsData(prev => prev.map(s => s.id === student_id ? { ...s, attendance_record: true } : s))
+            }
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
     }
+
+    console.log(studentsData)
 
     return (
         <div className={styles.container}>
@@ -51,7 +53,7 @@ function Frequency() {
                 <section className={styles.content_students}>
                     <ul>
                         {studentsData.map((student) => (
-                            <li key={student.id}>
+                            <li key={student.student_id}>
                                 <h3>
                                     {student.name}
                                     <span>
@@ -64,24 +66,37 @@ function Frequency() {
                                         {student.status}
                                     </span>
 
-                                    <button
-                                        disabled={student.status === "Inativo"}
-                                        onClick={() => markFrequency(
-                                            student.student_id,
-                                            true,
-                                            new Date().toLocaleTimeString().slice(0, 8)
-                                        )}>
-                                        Presente
-                                    </button>
 
-                                    <button
-                                        disabled={student.status === "Inativo"}
-                                        onClick={() => markFrequency(
-                                            student.student_id,
-                                            false
-                                        )}>
-                                        Ausente
-                                    </button>
+
+                                    {student?.attendance_record ? (
+                                        <span>
+                                            Registrado
+                                        </span>
+                                    )
+                                        :
+                                        (
+                                            <>
+                                                <button
+                                                    disabled={student.status === "Inativo"}
+                                                    onClick={() => markFrequency(
+                                                        student.student_id,
+                                                        true,
+                                                        new Date().toLocaleTimeString().slice(0, 8)
+                                                    )}>
+                                                    Presente
+                                                </button>
+
+                                                <button
+                                                    disabled={student.status === "Inativo"}
+                                                    onClick={() => markFrequency(
+                                                        student.student_id,
+                                                        false
+                                                    )}>
+                                                    Ausente
+                                                </button>
+                                            </>
+                                        )
+                                    }
                                 </div>
                             </li>
                         ))
