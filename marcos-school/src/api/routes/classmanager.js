@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const pool = require('../bd/connectionBD')
+const { data } = require('react-router-dom')
 
 router.post('/enrollclass', async (req, res) => {
-    let Datelogger
+    let Datelogger = new Date().toLocaleString('pt-BR')
+
     try {
         const { nome_disciplina, id_minister, modalidade } = req.body
         Datelogger = req.requestTimestamp
@@ -56,7 +58,8 @@ router.post('/fetchclass', async (req, res) => {
 })
 
 router.delete('/removeclass/:id_classe', async (req, res) => {
-    let Datelogger
+    let Datelogger = new Date().toLocaleString('pt-BR')
+
     try {
         const { id_classe } = req.params
         Datelogger = req.requestTimestamp
@@ -83,7 +86,8 @@ router.delete('/removeclass/:id_classe', async (req, res) => {
 })
 
 router.post('/togglestatus', async (req, res) => {
-    let Datelogger
+    let Datelogger = new Date().toLocaleString('pt-BR')
+
     try {
         const { class_id } = req.body
         const CurrentDate = req.Currentdate
@@ -139,7 +143,7 @@ router.post('/fetchinfoclass', async (req, res) => {
 })
 
 router.post('/editclass/:id', async (req, res) => {
-    let Datelogger
+    let Datelogger = new Date().toLocaleString('pt-BR')
 
     try {
         const { id } = req.params
@@ -296,6 +300,46 @@ router.post('/frequency', async (req, res) => {
         res.status(200).json({
             success: true,
             message: '[BACKEND] Frequência registrada com sucesso.',
+            timestamp: Datelogger
+        })
+
+    } catch (err) {
+        console.error('[BACKEND] Falha na alteração dos dados:', err)
+        return res.status(500).json({
+            success: false,
+            error: '[BACKEND] Falha ao tentar alterar os dados.',
+            timestamp: Datelogger
+        })
+    }
+})
+
+router.post('/getfrequency', async (req, res) => {
+    let Datelogger = new Date().toLocaleString('pt-BR')
+
+    try {
+        const { currentDay } = req.body
+
+        const [rows] = await pool.query(
+            `SELECT j.present
+            FROM attendance,
+            JSON_TABLE(
+                JSON_KEYS(attendance_data->'$.week'),
+                '$[*]' COLUMNS (
+                    week_key VARCHAR(50) PATH '$'
+                )
+            ) AS week_keys
+            CROSS JOIN JSON_TABLE(
+                attendance_data,
+                CONCAT('$.week.', week_key, '.', ?) COLUMNS (
+                    present BOOLEAN PATH '$.present'
+                )
+            ) AS j
+            WHERE j.present IS NOT NULL`, [currentDay]
+        )
+
+        res.status(200).json({
+            success: true,
+            data: rows,
             timestamp: Datelogger
         })
 

@@ -8,7 +8,7 @@ function Frequency() {
 
     const [studentsData, setStudentsData] = useState([])
     const { class_id } = useParams()
-    const currentDate = new Date().toLocaleDateString('pt-BR')
+    const currentDate = new Date().toISOString().split('T')[0]
 
     useEffect(() => {
         const fetchStudentsInClass = async () => {
@@ -21,8 +21,25 @@ function Frequency() {
                 console.error(`[ERRO] ${err.message}`)
             }
         }
+
+        const fetchStudentsFrequency = async () => {
+            console.log(currentDate)
+            try {
+                const response = await axios.post(`http://localhost:5000/api/getfrequency`, {
+                    currentDay: currentDate
+                })
+
+                console.log(response.data.data)
+
+
+            } catch (err) {
+                console.error(`[ERRO] ${err.message}`)
+            }
+        }
+
         fetchStudentsInClass()
-    }, [class_id])
+        fetchStudentsFrequency()
+    }, [class_id, currentDate, studentsData])
 
     const markFrequency = async (student_id, present, arrival_time = null, notes = "") => {
         try {
@@ -34,20 +51,23 @@ function Frequency() {
                 notes: notes
             })
             if (response.data?.success) {
-                setStudentsData(prev => prev.map(s => s.id === student_id ? { ...s, attendance_record: true } : s))
+                setStudentsData(prev => prev.map(s => s.student_id === student_id ? {
+                    ...s,
+                    attendance_record: true,
+                    present: present
+                } : s
+                ))
             }
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)
         }
     }
 
-    console.log(studentsData)
-
     return (
         <div className={styles.container}>
             <div className={styles.content}>
                 <h2>
-                    Frequência turma: {currentDate}
+                    Frequência turma: {new Date().toLocaleDateString('pt-BR')}
                 </h2>
 
                 <section className={styles.content_students}>

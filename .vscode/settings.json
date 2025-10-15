@@ -26,6 +26,7 @@
         "fetchinfoclass",
         "fetchstudents",
         "filtered",
+        "getfrequency",
         "gradient",
         "Graduation",
         "hide",
