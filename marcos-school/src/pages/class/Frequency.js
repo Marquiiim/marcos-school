@@ -23,15 +23,27 @@ function Frequency() {
         }
 
         const fetchStudentsFrequency = async () => {
-            console.log(currentDate)
             try {
                 const response = await axios.post(`http://localhost:5000/api/getfrequency`, {
-                    currentDay: currentDate
+                    currentDay: currentDate,
+                    class_id: class_id
                 })
 
                 console.log(response.data.data)
+                setStudentsData(prev =>
+                    prev.map(student => {
+                        const studentData = response.data.data.find(s => s.student_id === student.student_id)
 
+                        if (!studentData) return student
 
+                        return {
+                            ...student,
+                            attendance_record: studentData.present === 'true',
+                            present: studentData.present === 'true'
+                        }
+                    }
+                    ))
+                console.log(studentsData)
             } catch (err) {
                 console.error(`[ERRO] ${err.message}`)
             }
@@ -39,7 +51,7 @@ function Frequency() {
 
         fetchStudentsInClass()
         fetchStudentsFrequency()
-    }, [class_id, currentDate, studentsData])
+    }, [class_id, currentDate])
 
     const markFrequency = async (student_id, present, arrival_time = null, notes = "") => {
         try {
@@ -51,12 +63,13 @@ function Frequency() {
                 notes: notes
             })
             if (response.data?.success) {
-                setStudentsData(prev => prev.map(s => s.student_id === student_id ? {
-                    ...s,
-                    attendance_record: true,
-                    present: present
-                } : s
-                ))
+                setStudentsData(prev =>
+                    prev.map(s => s.student_id === student_id ? {
+                        ...s,
+                        attendance_record: true,
+                        present: present
+                    } : s
+                    ))
             }
         } catch (err) {
             console.error(`[ERRO] ${err.message}`)

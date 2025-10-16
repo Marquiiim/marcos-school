@@ -317,24 +317,26 @@ router.post('/getfrequency', async (req, res) => {
     let Datelogger = new Date().toLocaleString('pt-BR')
 
     try {
-        const { currentDay } = req.body
+        const { currentDay, class_id } = req.body
 
         const [rows] = await pool.query(
-            `SELECT j.present
-            FROM attendance,
-            JSON_TABLE(
-                JSON_KEYS(attendance_data->'$.week'),
-                '$[*]' COLUMNS (
-                    week_key VARCHAR(50) PATH '$'
-                )
-            ) AS week_keys
-            CROSS JOIN JSON_TABLE(
-                attendance_data,
-                CONCAT('$.week.', week_key, '.', ?) COLUMNS (
-                    present BOOLEAN PATH '$.present'
-                )
-            ) AS j
-            WHERE j.present IS NOT NULL`, [currentDay]
+            `SELECT 
+                a.student_id,
+                JSON_UNQUOTE(JSON_EXTRACT(
+                    attendance_data,
+                    CONCAT('$.week.', day_keys.day_key, '.present')
+                )) as present
+            FROM attendance a
+            CROSS JOIN (
+                SELECT 'Segunda-feira' as day_key
+                UNION SELECT 'Terça-feira'
+                UNION SELECT 'Quarta-feira' 
+                UNION SELECT 'Quinta-feira'
+                UNION SELECT 'Sexta-feira'
+            ) day_keys
+            WHERE a.class_id = ? 
+                AND JSON_UNQUOTE(JSON_EXTRACT(attendance_data, CONCAT('$.week.', day_keys.day_key, '.date'))) = ?
+                AND JSON_EXTRACT(attendance_data, CONCAT('$.week.', day_keys.day_key, '.present')) IS NOT NULL`, [class_id, currentDay]
         )
 
         res.status(200).json({

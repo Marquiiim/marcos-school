@@ -54,6 +54,7 @@
         "teacher",
         "toadd",
         "togglestatus",
-        "trash"
+        "trash",
+        "UNQUOTE"
     ]
 }
