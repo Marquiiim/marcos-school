@@ -39,44 +39,6 @@
   background: linear-gradient(90deg, #2d7cc6, #3a9df8);
   border-radius: 3px;
 }
-.container .content .search_area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  background: rgba(10, 15, 24, 0.7);
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(45, 124, 198, 0.2);
-}
-.container .content .search_area input {
-  flex: 1;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  border: none;
-  background: rgb(22, 33, 52.8);
-  color: #ffffff;
-  font-size: 1rem;
-  margin-right: 1.5rem;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(45, 124, 198, 0.3);
-}
-.container .content .search_area input::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-.container .content .search_area input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-.container .content .search_area input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(58, 157, 248, 0.4);
-  background: rgb(28, 42, 67.2);
-}
-.container .content .search_area span {
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
 .container .content .content_students ul {
   list-style: none;
 }
@@ -110,6 +72,14 @@
   align-items: center;
   gap: 1.5rem;
 }
+.container .content .content_students ul li div .checked_frequency {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(19, 141, 255, 0.2);
+  color: #138dff;
+}
 .container .content .content_students ul li div div {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
@@ -119,6 +89,18 @@
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
+}
+.container .content .content_students ul li div .Pendente {
+  background: rgba(202, 193, 15, 0.2);
+  color: #cac10f;
+}
+.container .content .content_students ul li div .Presente {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+.container .content .content_students ul li div .Ausente {
+  background: rgba(202, 56, 15, 0.2);
+  color: #ca380f;
 }
 .container .content .content_students ul li div .Ativo {
   background: rgba(76, 175, 80, 0.2);

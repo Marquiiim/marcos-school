@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { BiCheckDouble } from "react-icons/bi";
 import axios from "axios"
 
 import styles from '../../sass/Frequency.module.css'
@@ -7,6 +8,7 @@ import styles from '../../sass/Frequency.module.css'
 function Frequency() {
 
     const [studentsData, setStudentsData] = useState([])
+    const [refresh, setRefresh] = useState(0)
     const { class_id } = useParams()
     const currentDate = new Date().toISOString().split('T')[0]
 
@@ -29,7 +31,6 @@ function Frequency() {
                     class_id: class_id
                 })
 
-                console.log(response.data.data)
                 setStudentsData(prev =>
                     prev.map(student => {
                         const studentData = response.data.data.find(s => s.student_id === student.student_id)
@@ -38,12 +39,11 @@ function Frequency() {
 
                         return {
                             ...student,
-                            attendance_record: studentData.present === 'true',
+                            attendance_record: true,
                             present: studentData.present === 'true'
                         }
                     }
                     ))
-                console.log(studentsData)
             } catch (err) {
                 console.error(`[ERRO] ${err.message}`)
             }
@@ -51,9 +51,13 @@ function Frequency() {
 
         fetchStudentsInClass()
         fetchStudentsFrequency()
-    }, [class_id, currentDate])
+
+    }, [class_id, currentDate, refresh])
 
     const markFrequency = async (student_id, present, arrival_time = null, notes = "") => {
+
+        setRefresh(prev => prev + 1)
+
         try {
             const response = await axios.post(`http://localhost:5000/api/frequency`, {
                 student_id: student_id,
@@ -98,12 +102,18 @@ function Frequency() {
                                         className={`${styles.status} ${styles[student.status]}`}>
                                         {student.status}
                                     </span>
+                                    <span
+                                        className={
+                                            `${styles.status} ${styles[!student.attendance_record ? 'Pendente' : student.present ? 'Presente' : 'Ausente']}`}>
+
+                                        Situação: {!student.attendance_record ? 'Pendente' : student.present ? 'Presente' : 'Ausente'}
+                                    </span>
 
 
 
-                                    {student?.attendance_record ? (
-                                        <span>
-                                            Registrado
+                                    {student.attendance_record !== undefined ? (
+                                        <span className={styles.checked_frequency}>
+                                            Registrado <BiCheckDouble />
                                         </span>
                                     )
                                         :
@@ -137,7 +147,7 @@ function Frequency() {
                     </ul>
                 </section>
             </div>
-        </div>
+        </div >
     )
 }
 
