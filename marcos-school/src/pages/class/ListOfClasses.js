@@ -13,7 +13,6 @@ function ListOfClasses() {
                 const response = await axios.post(`http://localhost:5000/api/fetchinfoclass`, {
                     class_id: 0
                 })
-                console.log(response.data)
                 setDataClasses(response.data)
             } catch (err) {
                 console.error(`[ERRO] ${err.message}`)
